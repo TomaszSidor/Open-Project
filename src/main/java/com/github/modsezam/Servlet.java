@@ -30,7 +30,7 @@ public class Servlet extends HttpServlet {
                 response.getWriter().println("test");
 
                 while (resultSet.next()){
-                    nameUser = resultSet.getString("title") + " " + resultSet.getString("a_surname");
+                    nameUser = resultSet.getString("title") + " " + resultSet.getString("author_surname");
                     response.getWriter().println(nameUser);
                 }
             }
