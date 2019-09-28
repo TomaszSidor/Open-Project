@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,7 +78,7 @@
                 </thead>
 
                 <tr>
-                    <td><a href="#!">"Games of thrones" J.R.R Martin</a></td>
+                    <td><a href="#!">${lastReadBook.title}</a></td>
                 </tr>
                 <tr>
                     <td><a href="#!">"Clean Code" Robert C. Martin/a></a></td>
