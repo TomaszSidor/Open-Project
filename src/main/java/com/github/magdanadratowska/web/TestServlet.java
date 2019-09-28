@@ -1,6 +1,6 @@
 package com.github.magdanadratowska.web;
 
-import com.github.magdanadratowska.dao.UserDao;
+import com.github.magdanadratowska.dao.UserDAO;
 import com.github.magdanadratowska.model.User;
 
 import javax.servlet.ServletException;
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.*;
 
 @WebServlet("/ServletTest")
 public class TestServlet extends HttpServlet {
@@ -18,7 +17,7 @@ public class TestServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
 
         User userById = userDao.getUserById(1L);
         System.out.println(userById);
