@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/"}, name = "BooksServlet")
+@WebServlet(urlPatterns = {"/books/list", "/book/add"}, name = "BooksServlet")
 public class BooksServlet extends HttpServlet {
 
     private BookDAO bookDAO;
@@ -27,10 +27,9 @@ public class BooksServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getServletPath();
-
         try {
             switch (action) {
-                case "/list":
+                case "/books/list":
                     listBooks(request, response);
                     break;
             }
@@ -42,7 +41,7 @@ public class BooksServlet extends HttpServlet {
     private void listBooks(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         List<Book> bookList = bookDAO.selectAllBooks();
         request.setAttribute("bookList", bookList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("booklist.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("../booklist.jsp");
         dispatcher.forward(request, response);
     }
 }
