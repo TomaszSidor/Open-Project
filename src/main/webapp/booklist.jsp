@@ -28,8 +28,8 @@
         <a href="#" class="brand-logo">Readers</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li class="active"><a href="account.jsp">My account</a></li>
-            <li><a href="userlist.jsp">My books</a></li>
-            <li><a href="booklist.jsp">Find book</a></li>
+            <li><a href="userlist">My books</a></li>
+            <li><a href="list">Find book</a></li>
             <li><a href="login.jsp">Logout</a></li>
         </ul>
     </div>

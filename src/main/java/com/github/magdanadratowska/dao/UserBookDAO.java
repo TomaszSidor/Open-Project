@@ -5,6 +5,8 @@ import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserBook;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,10 @@ public class UserBookDAO {
                 String authorName = resultSet.getString("author_name");
                 String authorSurname = resultSet.getString("author_surname");
                 Book book = new Book(id, title, authorName, authorSurname);
-                usersBookList.add(new UserBook(book, rate));
+                String addition_date = resultSet.getString("addition_date");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime additionDate = LocalDateTime.parse(addition_date, formatter);
+                usersBookList.add(new UserBook(book, additionDate, rate));
             }
         } catch (SQLException e) {
             e.printStackTrace();

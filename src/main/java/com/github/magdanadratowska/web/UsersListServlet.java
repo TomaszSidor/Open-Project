@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/userl")
+@WebServlet("/userlist")
 public class UsersListServlet extends HttpServlet {
 
     private UserBookDAO userBookDAO;
@@ -28,16 +28,17 @@ public class UsersListServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getServletPath();
 
-        switch (action) {
-            case "/userlist":
-                userlist(request, response);
-                break;
+        try {
+            userlist(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+
     }
 
-    private void userlist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void userlist(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         User user = new User();
         user.setId(1L);
         List<UserBook> usersBookList = userBookDAO.getUsersBookList(user);

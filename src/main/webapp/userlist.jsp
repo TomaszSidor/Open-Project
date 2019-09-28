@@ -27,8 +27,8 @@
         <a href="#" class="brand-logo">Readers</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="account.jsp">My account</a></li>
-            <li class="active"><a href="userlist.jsp">My books</a></li>
-            <li><a href="booklist.jsp">Find book</a></li>
+            <li class="active"><a href="userlist">My books</a></li>
+            <li><a href="list">Find book</a></li>
             <li><a href="login.jsp">Logout</a></li>
         </ul>
     </div>
@@ -42,16 +42,19 @@
                 <th>Author</th>
                 <th>Title</th>
                 <th>Rate</th>
+                <th>Addition date</th>
                 <th>Remove</th>
             </tr>
             </thead>
 
             <tbody>
-            <c:forEach var="book" items="${requestScope.usersBookList}}">
+            <jsp:useBean id="usersBookList" scope="request" type="java.util.List"/>
+            <c:forEach var="userBook" items="${usersBookList}">
             <tr>
-                <td>${book.getBook().authorName + " " + book.getBook.authorSurname}</td>
-                <td>${book.getBook.title}</td>
-                <td>${book.rate}</td>
+                <td>${userBook.book.authorName} ${userBook.book.authorSurname} </td>
+                <td>${userBook.book.title}</td>
+                <td>${userBook.rate}</td>
+                <td>${userBook.additionDate}</td>
                 <td><a href="#" class="btn-small red lighten-2">x</a></td>
             </tr>
             </c:forEach>
@@ -61,6 +64,6 @@
 
 
 </div>
-
+<script type="text/javascript" src="js/materialize.min.js"></script>
 </body>
 </html>
