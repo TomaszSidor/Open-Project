@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -35,7 +36,11 @@ public class UserLoginServlet extends HttpServlet {
             }
             user = optionalUser.get();
 
-            if(!user.getPassword().equals(password)) {
+            if(user.getPassword().equals(password)) {
+                HttpSession session=req.getSession();
+                session.setAttribute("user", user);
+                resp.sendRedirect("/account");
+            } else {
                 System.out.println("Błędne hasło");//dla sprawdzenia
 //            TODO błędne hasło
             }
@@ -44,6 +49,6 @@ public class UserLoginServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        resp.sendRedirect("/index");
+        resp.sendRedirect("/login");
     }
 }
