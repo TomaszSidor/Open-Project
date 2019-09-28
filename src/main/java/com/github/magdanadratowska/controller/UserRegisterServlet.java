@@ -1,6 +1,6 @@
 package com.github.magdanadratowska.controller;
 
-import com.github.magdanadratowska.user.User;
+import com.github.magdanadratowska.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

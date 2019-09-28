@@ -1,4 +1,4 @@
-package com.github.magdanadratowska.user;
+package com.github.magdanadratowska.model;
 
 public class User {
     private String email;
