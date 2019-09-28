@@ -2,5 +2,5 @@
 
 <navigator>
     <%--TODO--%>
-<h1>navigator</h1>
+
 </navigator>
