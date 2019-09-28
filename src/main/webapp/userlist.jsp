@@ -1,11 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: m_nad
-  Date: 27.09.2019
-  Time: 11:41
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +35,6 @@
 </nav>
 
 <div class="container">
-    <div class="card-panel red lighten-5">
         <h1 class="red-text">My books</h1>
         <table class="highlight">
             <thead>
@@ -52,20 +48,23 @@
 
             <tbody>
             <tr>
-                <th>J.R.R. Martin</th>
-                <th>Games of throne</th>
-                <th>12.01.2014</th>
-                <th><a href="#" class="btn-small red lighten-2">x</a></th>
+                <td>J.R.R. Martin</td>
+                <td>Games of throne</td>
+                <td>12.01.2014</td>
+                <td><a href="#" class="btn-small red lighten-2">x</a></td>
             </tr>
             <tr>
-                <th>Robert C. Martin</th>
-                <th>Clean Code</th>
-                <th>21.09.2019</th>
-                <th><a href="#" class="btn-small red lighten-2">x</a></th>
+                <td>Robert C. Martin</td>
+                <td>Clean Code</td>
+                <td>21.09.2019</td>
+                <td><a href="#" class="btn-small red lighten-2">x</a></td>
             </tr>
             </tbody>
 
         </table>
 
-    </div>
+
 </div>
+
+</body>
+</html>
