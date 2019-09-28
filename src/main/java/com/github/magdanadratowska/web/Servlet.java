@@ -1,4 +1,4 @@
-package com.github.magdanadratowska;
+package com.github.magdanadratowska.web;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
