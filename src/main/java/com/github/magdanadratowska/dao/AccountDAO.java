@@ -11,8 +11,8 @@ public class AccountDAO {
     private String jdbcUsername = "m1448_javagda24";
     private String jdbcpassword = "j@vaGda24!";
     private int userId = 1;
-    private static final String SELECT_LAST_BOOKS = "select * from (select * from user_book, book where user_book.id_book = book.id) T where id_user =?" +
-            "order by addition_date limit 1";
+//    private static final String SELECT_LAST_BOOKS = "select * from book";
+    private static final String SELECT_LAST_BOOKS = "select * from (select * from user_book, book where user_book.id_book = book.id) T where id_user = ? order by addition_date limit 1";
 
 
     protected Connection getConnection() {
@@ -34,11 +34,15 @@ public class AccountDAO {
             preparedStatement = connection.prepareStatement(SELECT_LAST_BOOKS);
             {
                 preparedStatement.setLong(1, 1); //user.getId());
+
                 ResultSet resultSet = preparedStatement.executeQuery();
-                book.setId(resultSet.getInt(userId));
-                book.setAuthorName(resultSet.getString("author_name"));
-                book.setAuthorSurname(resultSet.getString("author_surname"));
-                book.setTitle(resultSet.getString("title"));
+                while(resultSet.next()) {
+                    System.out.println(resultSet.getString("author_name"));
+                    book.setAuthorName(resultSet.getString("author_name"));
+                    book.setAuthorSurname(resultSet.getString("author_surname"));
+                    book.setTitle(resultSet.getString("title"));
+                    System.out.println(book.toString());
+                }
             }
 
         } catch (SQLException e) {

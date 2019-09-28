@@ -16,20 +16,17 @@ import java.sql.SQLException;
 @WebServlet("/account")
 public class AccountServlet extends HttpServlet {
     private AccountDAO accountDAO;
-    private User user = new User();
 
+    public void init() {
+        accountDAO = new AccountDAO();
+    }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getServletPath();
-
         try {
-            {
-                lastBook(request, response);
-                return;
-            }
+            lastBook(request, response);
 
         } catch (SQLException ex) {
             throw new ServletException(ex);
@@ -42,8 +39,5 @@ public class AccountServlet extends HttpServlet {
         request.setAttribute("lastReadBook", lastBook);
         RequestDispatcher dispatcher = request.getRequestDispatcher("account.jsp");
         dispatcher.forward(request, response);
-
     }
-
-
 }
