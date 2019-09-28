@@ -26,14 +26,14 @@ public class UserBookDAO {
         return connection;
     }
 
-    public List<UserBook> getUsersBookList(User user){
+    public List<UserBook> getUsersBookList(User user) {
         List<UserBook> usersBookList = new ArrayList<>();
-        Connection connection = getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS_LIST);
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS_LIST);) {
             preparedStatement.setLong(1, user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int rate = resultSet.getInt("rate");
                 long id = resultSet.getLong("id");
                 String title = resultSet.getString("title");

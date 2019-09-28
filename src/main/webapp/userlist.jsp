@@ -41,24 +41,20 @@
             <tr>
                 <th>Author</th>
                 <th>Title</th>
-                <th>Date</th>
+                <th>Rate</th>
                 <th>Remove</th>
             </tr>
             </thead>
 
             <tbody>
+            <c:forEach var="book" items="${requestScope.usersBookList}}">
             <tr>
-                <td>J.R.R. Martin</td>
-                <td>Games of throne</td>
-                <td>12.01.2014</td>
+                <td>${book.getBook().authorName + " " + book.getBook.authorSurname}</td>
+                <td>${book.getBook.title}</td>
+                <td>${book.rate}</td>
                 <td><a href="#" class="btn-small red lighten-2">x</a></td>
             </tr>
-            <tr>
-                <td>Robert C. Martin</td>
-                <td>Clean Code</td>
-                <td>21.09.2019</td>
-                <td><a href="#" class="btn-small red lighten-2">x</a></td>
-            </tr>
+            </c:forEach>
             </tbody>
 
         </table>
