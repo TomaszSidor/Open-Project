@@ -1,4 +1,4 @@
-package com.github.magdanadratowska.controller;
+package com.github.magdanadratowska.web;
 
 import com.github.magdanadratowska.model.User;
 
