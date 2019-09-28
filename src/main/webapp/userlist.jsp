@@ -24,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body>
+<body style="background-color:#ffebee">
 <nav>
     <div class="nav-wrapper">
         <a href="#" class="brand-logo">Readers</a>
@@ -36,34 +36,36 @@
         </ul>
     </div>
 </nav>
-<div class="card-panel orange accent-1">
-    Orange accent 1
-</div>
-<div class="card-panel orange accent-2">
-    Orange accent 2
-</div>
-<div class="card-panel orange accent-3">
-    Orange accent 3
-</div>
-<div class="card-panel orange lighten-1">
-    Orange lighten 1
-</div>
 
-<div class="card-panel orange lighten-2">
-    Orange lighten 2
-</div>
-<div class="card-panel orange lighten-3">
-    Orange lighten 3
-</div>
-<div class="card-panel orange lighten-4">
-    Orange lighten 4
-</div>
-<div class="card-panel orange lighten-5">
-    Orange lighten 5
-</div>
+<div class="container">
+    <div class="card-panel red lighten-5">
+        <h1 class="red-text">My books</h1>
+        <table class="highlight">
+            <thead>
+            <tr>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Remove</th>
+            </tr>
+            </thead>
 
-<!--JavaScript at end of body for optimized loading-->
-<%--<script type="text/javascript" src="js/materialize.min.js"></script>--%>
-</body>
-</html>
+            <tbody>
+            <tr>
+                <th>J.R.R. Martin</th>
+                <th>Games of throne</th>
+                <th>12.01.2014</th>
+                <th><a href="#" class="btn-small red lighten-2">x</a></th>
+            </tr>
+            <tr>
+                <th>Robert C. Martin</th>
+                <th>Clean Code</th>
+                <th>21.09.2019</th>
+                <th><a href="#" class="btn-small red lighten-2">x</a></th>
+            </tr>
+            </tbody>
 
+        </table>
+
+    </div>
+</div>
