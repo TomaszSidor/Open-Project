@@ -12,7 +12,7 @@ public class AccountDAO {
     private String jdbcpassword = "j@vaGda24!";
     private int userId = 1;
 //    private static final String SELECT_LAST_BOOKS = "select * from book";
-    private static final String SELECT_LAST_BOOKS = "select * from (select * from user_book, book where user_book.id_book = book.id) T where id_user = ? order by addition_date limit 1";
+    private static final String SELECT_LAST_BOOKS = "select * from (select * from user_book, book where user_book.id_book = book.id) T where id_user = ? order by addition_date desc limit 1";
 
 
     protected Connection getConnection() {
