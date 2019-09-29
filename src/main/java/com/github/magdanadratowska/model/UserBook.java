@@ -6,6 +6,7 @@ public class UserBook {
     private Book book;
     private LocalDateTime additionDate;
     private int rate;
+    private boolean isActive;
 
     public UserBook() {
     }
@@ -14,6 +15,7 @@ public class UserBook {
         this.book = book;
         this.additionDate = additionDate;
         this.rate = rate;
+        this.isActive =true;
     }
 
     public Book getBook() {
@@ -38,5 +40,13 @@ public class UserBook {
 
     public void setRate(int rate) {
         this.rate = rate;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

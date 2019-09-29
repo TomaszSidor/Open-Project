@@ -1,6 +1,7 @@
 package com.github.magdanadratowska.web;
 
 import com.github.magdanadratowska.dao.UserBookDAO;
+import com.github.magdanadratowska.model.Book;
 import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserBook;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/userlist")
+@WebServlet(urlPatterns = {"/userlist/list", "/userlist/delete"})
 public class UsersListServlet extends HttpServlet {
 
     private UserBookDAO userBookDAO;
@@ -29,13 +30,31 @@ public class UsersListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+        String action = request.getServletPath();
         try {
-            userlist(request, response);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            switch (action) {
+                case "/userlist/list":
+                    userlist(request, response);
+                    break;
+                case "/userlist/delete":
+                    deleteBookFromUserList(request, response);
+                    break;
+            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
         }
 
 
+    }
+
+    private void deleteBookFromUserList(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        User user = new User();
+        user.setId(1L);
+        long id = Long.parseLong(request.getParameter("id"));
+        userBookDAO.deleteBookFromUserList(user, id);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("../userlist/list");
+        dispatcher.forward(request, response);
     }
 
     private void userlist(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
@@ -43,7 +62,7 @@ public class UsersListServlet extends HttpServlet {
         user.setId(1L);
         List<UserBook> usersBookList = userBookDAO.getUsersBookList(user);
         request.setAttribute("usersBookList", usersBookList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("userlist.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("../userlist.jsp");
         dispatcher.forward(request, response);
     }
 }

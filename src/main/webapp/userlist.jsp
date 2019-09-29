@@ -55,7 +55,7 @@
                 <td>${userBook.book.title}</td>
                 <td>${userBook.rate}</td>
                 <td>${userBook.additionDate}</td>
-                <td><a href="#" class="btn-small red lighten-2">x</a></td>
+                <td><a href="../userlist/delete?id=<c:out value="${userBook.book.id}"/> " class="btn-small red lighten-2">x </a></td>
             </tr>
             </c:forEach>
             </tbody>

@@ -15,7 +15,9 @@ public class UserBookDAO {
     private String jdbcURL = "jdbc:mysql://mysql10.mydevil.net:3306/m1448_proj_read?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private String jdbcUsername = "m1448_javagda24";
     private String jdbcpassword = "j@vaGda24!";
-    private static final String SELECT_USERS_LIST = "select * from (select * from user_book, book where user_book.id_book = book.id) T where id_user =?;";
+    private static final String SELECT_USERS_LIST = "select * from (select * from user_book, book where (user_book.id_book = book.id AND is_active=true)) T where id_user =?;";
+    private static final String DELETE_BOOK_FROM_USER_LIST = "update user_book set is_active = false WHERE (id_user=? AND id_book=?); ";
+
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -52,4 +54,18 @@ public class UserBookDAO {
         }
         return usersBookList;
     }
+
+    public void deleteBookFromUserList(User user, Long id) {
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BOOK_FROM_USER_LIST);) {
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(2, id);
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
