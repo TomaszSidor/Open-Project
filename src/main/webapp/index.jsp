@@ -6,6 +6,6 @@
 <a href="/account">(/account) account site</a><br>
 <a href="/user-register">(/user-register) user-register</a><br>
 <a href="/login">(/login) login</a><br>
-<a href="/userlist">(/userlist) user list</a><br>
+<a href="/userlist/list">(/userlist/list) user list</a><br>
 </body>
 </html>
