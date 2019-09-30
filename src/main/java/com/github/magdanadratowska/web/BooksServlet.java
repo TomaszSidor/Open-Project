@@ -1,7 +1,8 @@
 package com.github.magdanadratowska.web;
 
-import com.github.magdanadratowska.dao.BookDAO;
+
 import com.github.magdanadratowska.model.Book;
+import com.github.magdanadratowska.dao.BookDAO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

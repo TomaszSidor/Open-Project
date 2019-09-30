@@ -15,7 +15,6 @@ public class BookDAO {
     private static final String SELECT_ALL_BOOKS = "select * from book;";
     private static final String SELECT_BOOK_BY_ID = "select * from book where id=?;";
 
-
     protected Connection getConnection() {
         Connection connection = null;
         try {
