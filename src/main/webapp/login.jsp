@@ -1,11 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: W540
-  Date: 2019-09-27
-  Time: 14:47
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <!--Import Google Icon Font-->
@@ -77,6 +74,14 @@
             </form>
         </div>
     </div>
+
+
+
+<c:if test="${session.getAttribute('error').equals('userNotFound')}">
+    <h1>tutaj będzie kod z informacją że nie znaleziono usera</h1>
+</c:if>
+
 </div>
+
 </body>
 </html>
