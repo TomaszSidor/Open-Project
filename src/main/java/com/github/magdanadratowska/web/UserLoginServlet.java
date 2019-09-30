@@ -47,7 +47,7 @@ public class UserLoginServlet extends HttpServlet {
                     session.setAttribute("userId", user.getId());
                     session.setAttribute("userName", user.getUsername());
                     //TODO userType
-                    resp.sendRedirect("/login");
+                    resp.sendRedirect("/account");
                 } else {
                     System.out.println("Błędne hasło");//dla sprawdzenia
                     session.setAttribute("error", "wrongPassword");

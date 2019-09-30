@@ -35,19 +35,39 @@
 
 
         <div class="col s12 m6">
-            <h4>Login:</h4>
-            <form method="post" action="/login">
-                <div>
-                    <input placeholder="Your email" id="user-email-login" type="text" class="validate" name="email">
-                    <label for="user-email-login">User email</label>
-                    <input placeholder="Your password" id="user-password-login" type="text" class="validate"
-                           name="password">
-                    <label for="user-password-login">User email</label>
+            <div class="row">
+                <h4>Login:</h4>
+                <form method="post" action="/login">
+                    <div>
+                        <input placeholder="Your email" id="user-email-login" type="text" class="validate" name="email">
+                        <label for="user-email-login">User email</label>
+                        <input placeholder="Your password" id="user-password-login" type="password" class="validate"
+                               name="password">
+                        <label for="user-password-login">User email</label>
+                    </div>
+                    <div>
+                        <input type="submit" class="waves-effect waves-light btn red lighten-1" value="login">
+                    </div>
+                </form>
+            </div>
+
+            <c:if test="${sessionScope.error != null}">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card-panel red lighten-1">
+                            <c:choose>
+                                <c:when test="${sessionScope.error.equals('userNotFound')}">
+                                    <span class="white-text">Nie znaleziono użytkownika.</span>
+                                </c:when>
+                                <c:when test="${sessionScope.error.equals('wrongPassword')}">
+                                    <span class="white-text">Błędne hasło.</span>
+                                </c:when>
+                            </c:choose>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <input type="submit" class="waves-effect waves-light btn" value="login">
-                </div>
-            </form>
+            </c:if>
+
         </div>
 
 
@@ -61,25 +81,19 @@
                     <input placeholder="Your email" id="user-email" type="text" class="validate" name="email">
                     <label for="user-email">User email</label>
 
-                    <input placeholder="Your password" id="user-password" type="text" class="validate" name="password">
+                    <input placeholder="Your password" id="user-password" type="password" class="validate" name="password">
                     <label for="user-password">User email</label>
 
-                    <input placeholder="Repeat password" id="user-password-repeat" type="text" class="validate"
+                    <input placeholder="Repeat password" id="user-password-repeat" type="password" class="validate"
                            name="password-repeat">
                     <label for="user-password-repeat">Repeat password</label>
                 </div>
                 <div>
-                    <input type="submit" class="waves-effect waves-light btn" value="submit">
+                    <input type="submit" class="waves-effect waves-light btn red lighten-1" value="submit">
                 </div>
             </form>
         </div>
     </div>
-
-
-
-<c:if test="${session.getAttribute('error').equals('userNotFound')}">
-    <h1>tutaj będzie kod z informacją że nie znaleziono usera</h1>
-</c:if>
 
 </div>
 

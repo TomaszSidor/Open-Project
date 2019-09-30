@@ -34,6 +34,7 @@ public class UserRegisterServlet extends HttpServlet {
             user.setPassword(password);
             user.setRegisterDate(LocalDateTime.now());
             System.out.println(user.toString());// sprawdzenie czy działa
+            //TODO zalogowanie automatycznie po zarejestrowaniu
             try {
                 userDAO.addUser(user);
             } catch (SQLException e) {
