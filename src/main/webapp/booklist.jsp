@@ -60,7 +60,8 @@
                     <td>${book.authorSurname}</td>
 
                     <td>
-                        <a href="index.jsp"><i class="material-icons red-text lighten-2">add</i></a>
+                        <a href="/account/book/add?id=${book.id}"><i class="material-icons red-text lighten-2">add</i></a>
+
                     </td>
                 </tr>
             </c:forEach>

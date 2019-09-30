@@ -11,12 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-@WebServlet(urlPatterns = {"/books/list", "/book/add"}, name = "BooksServlet")
+@WebServlet(urlPatterns = {"/books"}, name = "BooksServlet")
 public class BooksServlet extends HttpServlet {
 
     private BookDAO bookDAO;
+
     public void init() {
         bookDAO = new BookDAO();
     }
@@ -26,22 +29,27 @@ public class BooksServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getServletPath();
         try {
-            switch (action) {
-                case "/books/list":
-                    listBooks(request, response);
-                    break;
-            }
-        } catch (SQLException ex) {
-            throw new ServletException(ex);
+            getBooks(request, response);
+        } catch (SQLException e) {
+            System.out.println("error");
         }
+
     }
 
-    private void listBooks(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        List<Book> bookList = bookDAO.selectAllBooks();
-        request.setAttribute("bookList", bookList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("../booklist.jsp");
+    private void getBooks(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+
+        RequestDispatcher dispatcher;
+        Optional<String> id = Optional.ofNullable(request.getParameter("id"));
+        if (id.isPresent()){
+            Optional<Book> book = bookDAO.readBook(Long.parseLong(id.get()));
+            book.ifPresent(b -> request.setAttribute("bookList", Collections.singletonList(b)));
+            dispatcher = request.getRequestDispatcher("booklist.jsp");
+        } else {
+            List<Book> bookList = bookDAO.readBooksList();
+            request.setAttribute("bookList", bookList);
+            dispatcher = request.getRequestDispatcher("booklist.jsp");
+        }
         dispatcher.forward(request, response);
     }
 }

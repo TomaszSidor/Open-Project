@@ -5,6 +5,7 @@ import com.github.magdanadratowska.model.Book;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BookDAO {
 
@@ -12,11 +13,12 @@ public class BookDAO {
     private String jdbcUsername = "m1448_javagda24";
     private String jdbcpassword = "j@vaGda24!";
     private static final String SELECT_ALL_BOOKS = "select * from book;";
+    private static final String SELECT_BOOK_BY_ID = "select * from book where id=?;";
 
 
     protected Connection getConnection() {
         Connection connection = null;
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcpassword);
         } catch (SQLException | ClassNotFoundException e) {
@@ -25,10 +27,10 @@ public class BookDAO {
         return connection;
     }
 
-    public List<Book> selectAllBooks() {
+    public List<Book> readBooksList() {
         List<Book> books = new ArrayList<>();
-        try(Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKS);) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKS);) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -37,10 +39,27 @@ public class BookDAO {
                 String authorSurname = resultSet.getString("author_surname");
                 books.add(new Book(id, title, authorName, authorSurname));
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return books;
+    }
+
+    public Optional<Book> readBook(long id) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BOOK_BY_ID);) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            String title = resultSet.getString("title");
+            String authorName = resultSet.getString("author_name");
+            String authorSurname = resultSet.getString("author_surname");
+            return Optional.of(new Book(title, authorName, authorSurname));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 
 }
