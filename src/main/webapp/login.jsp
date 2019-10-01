@@ -58,6 +58,7 @@
                             <c:choose>
                                 <c:when test="${sessionScope.error.equals('userNotFound')}">
                                     <span class="white-text">Nie znaleziono użytkownika.</span>
+
                                 </c:when>
                                 <c:when test="${sessionScope.error.equals('wrongPassword')}">
                                     <span class="white-text">Błędne hasło.</span>
