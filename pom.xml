@@ -32,7 +32,16 @@
             <version>8.0.17</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version> <!-- or use LATEST -->
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.21</version> <!-- or use LATEST -->
+        </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -59,6 +68,9 @@
         <artifactId>jsp-api</artifactId>
         <version>2.2</version>
       </dependency>
+
+
+
 
 
     </dependencies>

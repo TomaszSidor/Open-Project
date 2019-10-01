@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/userlist/list", "/userlist/delete", "/userlist/todelete"})
+@WebServlet(urlPatterns = {"/userlist/list", "/userlist/delete"}, name = "UsersListServlet")
+
 public class UsersListServlet extends HttpServlet {
 
     private UserBookDAO userBookDAO;

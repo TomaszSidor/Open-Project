@@ -1,20 +1,23 @@
 package com.github.magdanadratowska.dao;
 
 import com.github.magdanadratowska.model.Book;
-import com.github.magdanadratowska.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class AccountDAO {
+
     private String jdbcURL = "jdbc:mysql://mysql10.mydevil.net:3306/m1448_proj_read?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private String jdbcUsername = "m1448_javagda24";
     private String jdbcpassword = "j@vaGda24!";
-    private int userId = 1;
-    //    private static final String SELECT_LAST_BOOKS = "select * from book";
-    private static final String SELECT_LAST_BOOKS = "select * from (select * from user_book, book where user_book.id_book = book.id) T where id_user = ? order by addition_date desc limit 1";
-    private static final String ADD_BOOK_TO_USER_LIST = "INSERT INTO user_book (id_user, id_book) VALUES (?, ?);";
 
+    private Logger logger = LoggerFactory.getLogger(AccountDAO.class);
+
+    private static final String SELECT_LAST_BOOKS = "select * from (select * from user_book, book where user_book.id_book = book.id) T where id_user = ? order by addition_date desc limit 1";
+    private static final String ADD_BOOK_TO_USER_LIST = "INSERT INTO user_book (id_user, id_book, addition_date) VALUES (?, ?, ?);";
+    private static final String REMOVE_BOOK_FROM_USER_LIST = "delete from user_book where id_user=? and id_book=?";
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -52,22 +55,30 @@ public class AccountDAO {
         return book;
     }
 
-    public boolean addBookToUserList(long idBook, long idUser) throws SQLException {
-
+    public void addBookToUserList(long idBook, long idUser) throws SQLException {
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(ADD_BOOK_TO_USER_LIST, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setLong(1, idUser);
                 statement.setLong(2, idBook);
+                statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
                 statement.executeUpdate();
-                ResultSet resultSet = statement.getGeneratedKeys();
-                if (resultSet.next()) {
-                    long generatedKey = resultSet.getLong(1);
-                    System.out.println("Utworzono rekord o numerze " + generatedKey);
-                    return true;
-                }
+                logger.info("add book to user list - userId {} idBook {} timeStamp {}", idUser, idBook, Timestamp.valueOf(LocalDateTime.now()));
             }
-            return false;
         }
     }
+
+    public void removeBookFromUserList(long idBook, long idUser) throws SQLException {
+        try (Connection connection = getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(REMOVE_BOOK_FROM_USER_LIST, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setLong(1, idUser);
+                statement.setLong(2, idBook);
+                statement.executeUpdate();
+                logger.info("remove book from user list - userId {} idBook {}", idUser, idBook);
+            }
+        }
+    }
+
+
+
 
 }
