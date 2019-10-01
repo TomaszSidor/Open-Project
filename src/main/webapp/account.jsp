@@ -22,18 +22,14 @@
 </head>
 
 <body style="background-color:#ffebee">
-<nav>
-    <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Readers</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li class="active"><a href="/account">My account</a></li>
-            <li><a href="userlist.jsp">My books</a></li>
-            <li><a href="booklist.jsp">Find book</a></li>
-            <li><a href="login.jsp">Logout</a></li>
-        </ul>
+
+
+
+<div class="container">
+    <div class="row">
+        <jsp:include page="navigator.jsp"></jsp:include>
     </div>
-</nav>
-<div class="container">+
+
     <div class="row">
 
         <div class="col s5">

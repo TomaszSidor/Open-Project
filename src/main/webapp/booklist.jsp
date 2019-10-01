@@ -23,17 +23,10 @@
 </head>
 
 <body>
-<nav>
-    <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Readers</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li class="active"><a href="account.jsp">My account</a></li>
-            <li><a href="userlist">My books</a></li>
-            <li><a href="list">Find book</a></li>
-            <li><a href="login.jsp">Logout</a></li>
-        </ul>
-    </div>
-</nav>
+
+<div class="row">
+    <jsp:include page="navigator.jsp"></jsp:include>
+</div>
 
 
 <div class="section no-pad-bot">

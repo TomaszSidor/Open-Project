@@ -3,7 +3,6 @@ package com.github.magdanadratowska.web;
 import com.github.magdanadratowska.dao.UserDAO;
 import com.github.magdanadratowska.model.User;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -39,12 +37,12 @@ public class UserLoginServlet extends HttpServlet {
             } else {
                 user = optionalUser.get();
                 if (user.getPassword().equals(password)) {
+                    session.setAttribute("loginError", null);
                     session.setAttribute("userId", user.getId());
                     session.setAttribute("userName", user.getUsername());
                     session.setAttribute("userType", user.getUserType());
                     resp.sendRedirect("/account");
                 } else {
-                    System.out.println("Błędne hasło");//dla sprawdzenia
                     session.setAttribute("loginError", "wrongPassword");
                     resp.sendRedirect("/login.jsp");
                 }
