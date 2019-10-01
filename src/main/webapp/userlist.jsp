@@ -14,7 +14,7 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
 
     <title>My books</title>
     <!--Let browser know website is optimized for mobile-->
@@ -27,33 +27,66 @@
 </div>
 
 <div class="container">
-        <h1 class="red-text">My books</h1>
-        <table class="highlight">
-            <thead>
-            <tr>
-                <th>Author</th>
-                <th>Title</th>
-                <th>Rate</th>
-                <th>Addition date</th>
-                <th>Remove</th>
-            </tr>
-            </thead>
+    <h4 class="materialize-red-text">My books</h4>
 
-            <tbody>
-            <jsp:useBean id="usersBookList" scope="request" type="java.util.List"/>
-            <c:forEach var="userBook" items="${usersBookList}">
+    <c:if test="${deleted}">
+        <div class="row">
+            <div class="col">
+                <div class="card-panel red lighten-2">
+                    <span class="white-text">Book has been removed</span>
+                </div>
+            </div>
+        </div>
+    </c:if>
+
+    <c:if test="${todelete}">
+        <div class="row">
+            <div class="col">
+                <div class="card-panel red lighten-2">
+                    <div class="card-content white-text">
+                        <span>Do you want to remove book <b>${title}</b> from your list? </span>
+                    </div>
+                    <div class="card-action">
+                        <table class="right-aligned">
+                            <tbody>
+                            <td><a href="/userlist/list" class="white-text">Cancel</a></td>
+                            <th><a href="/userlist/delete?id=<c:out value="${id}"/>"
+                                   class="btn-small black">Remove</a></th>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </c:if>
+
+    <table class="highlight">
+        <thead>
+        <tr>
+            <th>Author</th>
+            <th>Title</th>
+            <th>Rate</th>
+            <th>Addition date</th>
+            <th>Remove</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <jsp:useBean id="usersBookList" scope="request" type="java.util.List"/>
+        <c:forEach var="userBook" items="${usersBookList}">
             <tr>
                 <td>${userBook.book.authorName} ${userBook.book.authorSurname} </td>
                 <td>${userBook.book.title}</td>
                 <td>${userBook.rate}</td>
                 <td>${userBook.additionDate}</td>
-                <td><a href="../userlist/delete?id=<c:out value="${userBook.book.id}"/> " class="btn-small red lighten-2">x </a></td>
+                <td>
+                    <a href="/userlist/todelete?id=<c:out value="${userBook.book.id}"/>&title=<c:out value="${userBook.book.title}"/> "
+                       class="btn-small red lighten-2">x</a></td>
             </tr>
-            </c:forEach>
-            </tbody>
+        </c:forEach>
+        </tbody>
 
-        </table>
-
+    </table>
 
 </div>
 <script type="text/javascript" src="js/materialize.min.js"></script>

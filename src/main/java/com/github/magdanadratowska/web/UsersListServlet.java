@@ -11,11 +11,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/userlist/list", "/userlist/delete"})
+@WebServlet(urlPatterns = {"/userlist/list", "/userlist/delete", "/userlist/todelete"})
 public class UsersListServlet extends HttpServlet {
 
     private UserBookDAO userBookDAO;
@@ -40,6 +41,9 @@ public class UsersListServlet extends HttpServlet {
                 case "/userlist/delete":
                     deleteBookFromUserList(request, response);
                     break;
+                case "/userlist/todelete":
+                    wantToDeleteBook(request, response);
+                    break;
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);
@@ -48,11 +52,22 @@ public class UsersListServlet extends HttpServlet {
 
     }
 
+    private void wantToDeleteBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        long id = Long.parseLong(request.getParameter("id"));
+        String title = request.getParameter("title");
+        request.setAttribute("title", title);
+        request.setAttribute("id", id);
+        request.setAttribute("todelete", true);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("../userlist/list");
+        dispatcher.forward(request, response);
+    }
+
     private void deleteBookFromUserList(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         User user = new User();
         user.setId(1L);
         long id = Long.parseLong(request.getParameter("id"));
         userBookDAO.deleteBookFromUserList(user, id);
+        request.setAttribute("deleted", true);
         RequestDispatcher dispatcher = request.getRequestDispatcher("../userlist/list");
         dispatcher.forward(request, response);
     }
