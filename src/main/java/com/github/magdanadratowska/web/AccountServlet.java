@@ -2,7 +2,6 @@ package com.github.magdanadratowska.web;
 
 import com.github.magdanadratowska.dao.AccountDAO;
 import com.github.magdanadratowska.model.Book;
-import com.github.magdanadratowska.model.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/account")
+@WebServlet(urlPatterns = "/account", name = "AccountServlet")
 public class AccountServlet extends HttpServlet {
     private AccountDAO accountDAO;
 

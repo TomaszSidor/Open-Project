@@ -1,7 +1,6 @@
 package com.github.magdanadratowska.web;
 
 import com.github.magdanadratowska.dao.UserBookDAO;
-import com.github.magdanadratowska.model.Book;
 import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserBook;
 
