@@ -26,10 +26,10 @@ public class UserLoggedFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession();
         String path = req.getRequestURI().substring(req.getContextPath().length()).replaceAll("[/]+$", "");
 
-        boolean loggedIn = (session != null && session.getAttribute("Id") != null);
+        boolean loggedIn = (session.getAttribute("userName")!=null);
         boolean allowedPath = ALLOWED_PATHS.contains(path);
 
         if (loggedIn || allowedPath) {
