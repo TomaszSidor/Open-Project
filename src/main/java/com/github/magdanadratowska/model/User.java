@@ -8,11 +8,19 @@ public class User {
     private String email;
     private String password;
     private LocalDateTime registerDate;
+    private UserType userType;
 
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public User(String username, String email, String password, UserType userType) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
     }
 
     public User() {
@@ -58,6 +66,15 @@ public class User {
         this.registerDate = registerDate;
     }
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+
     @Override
     public String toString() {
         return "User{" +
@@ -66,6 +83,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", registerDate=" + registerDate +
+                ", userType=" + userType +
                 '}';
     }
 }

@@ -51,16 +51,15 @@
                 </form>
             </div>
 
-            <c:if test="${sessionScope.error != null}">
+            <c:if test="${sessionScope.loginError != null}">
                 <div class="row">
                     <div class="col s12">
                         <div class="card-panel red lighten-1">
                             <c:choose>
-                                <c:when test="${sessionScope.error.equals('userNotFound')}">
+                                <c:when test="${sessionScope.loginError.equals('userNotFound')}">
                                     <span class="white-text">Nie znaleziono użytkownika.</span>
-
                                 </c:when>
-                                <c:when test="${sessionScope.error.equals('wrongPassword')}">
+                                <c:when test="${sessionScope.loginError.equals('wrongPassword')}">
                                     <span class="white-text">Błędne hasło.</span>
                                 </c:when>
                             </c:choose>
@@ -68,11 +67,11 @@
                     </div>
                 </div>
             </c:if>
-
         </div>
 
 
         <div class="col s12 m6">
+            <div class="row">
             <h4>New user?</h4>
             <form method="post" action="/user-register">
                 <div>
@@ -93,6 +92,20 @@
                     <input type="submit" class="waves-effect waves-light btn red lighten-1" value="submit">
                 </div>
             </form>
+            </div>
+            <c:if test="${sessionScope.registerError != null}">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card-panel red lighten-1">
+                            <c:choose>
+                                <c:when test="${sessionScope.registerError.equals('repeatPasswordError')}">
+                                    <span class="white-text">Powtórzone hasło jest niepoprawne.</span>
+                                </c:when>
+                            </c:choose>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
         </div>
     </div>
 

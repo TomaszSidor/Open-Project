@@ -1,6 +1,7 @@
 package com.github.magdanadratowska.dao;
 
 import com.github.magdanadratowska.model.User;
+import com.github.magdanadratowska.model.UserType;
 
 import java.sql.*;
 import java.util.Optional;
@@ -12,7 +13,7 @@ public class UserDAO {
     private String jdbcpassword = "j@vaGda24!";
     private static final String SELECT_USER_BY_ID = "select * from user where id=?;";
     private static final String SELECT_USER_BY_EMAIL = "select * from user where email=?;";
-    private static final String ADD_USER = "INSERT INTO user (username, email, password, register_date) VALUES (?, ?, ?, ?);";
+    private static final String ADD_USER = "INSERT INTO user (username, email, password, register_date, user_type) VALUES (?, ?, ?, ?, ?);";
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -43,6 +44,7 @@ public class UserDAO {
             user.setEmail(resultSet.getString("email"));
             user.setPassword(resultSet.getString("password"));
             user.setRegisterDate(resultSet.getTimestamp("register_date").toLocalDateTime());
+            user.setUserType(UserType.valueOf(resultSet.getString("user_type")));
         }
         return user;
     }
@@ -54,6 +56,7 @@ public class UserDAO {
                 statement.setString(2, user.getEmail());
                 statement.setString(3, user.getPassword());
                 statement.setTimestamp(4, Timestamp.valueOf(user.getRegisterDate()));
+                statement.setString(5, user.getUserType().name());
                 statement.executeUpdate();
                 ResultSet resultSet = statement.getGeneratedKeys();
                 if (resultSet.next()) {

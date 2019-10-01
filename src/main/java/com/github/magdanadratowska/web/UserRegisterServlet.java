@@ -2,12 +2,14 @@ package com.github.magdanadratowska.web;
 
 import com.github.magdanadratowska.dao.UserDAO;
 import com.github.magdanadratowska.model.User;
+import com.github.magdanadratowska.model.UserType;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -27,13 +29,16 @@ public class UserRegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String passwordRepeat = req.getParameter("password-repeat");
+        HttpSession session = req.getSession();
         if (password.equals(passwordRepeat)) {
             User user = new User();
             user.setUsername(username);
             user.setEmail(email);
             user.setPassword(password);
             user.setRegisterDate(LocalDateTime.now());
-            System.out.println(user.toString());// sprawdzenie czy działa
+            user.setUserType(UserType.USER);
+
+            resp.sendRedirect("/account");
             //TODO zalogowanie automatycznie po zarejestrowaniu
             try {
                 userDAO.addUser(user);
@@ -41,7 +46,10 @@ public class UserRegisterServlet extends HttpServlet {
                 e.printStackTrace();
                 //TODO przekazanie informacji o błędzie
             }
+        } else {
+            session.setAttribute("registerError", "repeatPasswordError");
+            resp.sendRedirect("/login.jsp");
         }
-        resp.sendRedirect("/index");
+
     }
 }

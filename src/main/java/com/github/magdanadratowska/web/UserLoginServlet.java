@@ -34,32 +34,23 @@ public class UserLoginServlet extends HttpServlet {
         try {
             Optional<User> optionalUser = userDAO.getUserByEmail(email);
             if (!optionalUser.isPresent()) {
-                session.setAttribute("error", "userNotFound");
-//                req.getRequestDispatcher("/login.jsp").forward(req, resp);
+                session.setAttribute("loginError", "userNotFound");
                 resp.sendRedirect("/login.jsp");
-
-                //TODO nie znaleziono usera
-
             } else {
                 user = optionalUser.get();
-
                 if (user.getPassword().equals(password)) {
                     session.setAttribute("userId", user.getId());
                     session.setAttribute("userName", user.getUsername());
-                    //TODO userType
+                    session.setAttribute("userType", user.getUserType());
                     resp.sendRedirect("/account");
                 } else {
                     System.out.println("Błędne hasło");//dla sprawdzenia
-                    session.setAttribute("error", "wrongPassword");
+                    session.setAttribute("loginError", "wrongPassword");
                     resp.sendRedirect("/login.jsp");
-                    //TODO monit o błędnym haśle
-
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-//        resp.sendRedirect("/login");
     }
 }
