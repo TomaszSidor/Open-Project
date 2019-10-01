@@ -2,6 +2,7 @@ package com.github.magdanadratowska.web;
 
 import com.github.magdanadratowska.dao.AccountDAO;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,7 +38,7 @@ public class AccountBookServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         Optional<Object> objectUserId = Optional.ofNullable(session.getAttribute("userId"));
-        long userId = objectUserId.map(o -> Long.parseLong(o.toString())).get();
+        long userId = objectUserId.map(o -> Long.parseLong(o.toString())).orElse(0L);
 
         String idBookString = request.getParameter("id");
         long bookId;
@@ -45,23 +46,35 @@ public class AccountBookServlet extends HttpServlet {
             bookId = Long.parseLong(idBookString);
             accountDAO.addBookToUserList(bookId, userId);
             //przejście do strony książki
-        } catch (SQLException e) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("../list");
+            dispatcher.forward(request, response);
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
             //obsługa błędu
+        } catch (ServletException e) {
+            e.printStackTrace();
         }
     }
 
-    private void removeBookFromUserList(HttpServletRequest req, HttpServletResponse resp) {
-        String idBookString = req.getParameter("id");
-        long idUser = 4L;
-        long idBook;
+    private void removeBookFromUserList(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        Optional<Object> objectUserId = Optional.ofNullable(session.getAttribute("userId"));
+        long userId = objectUserId.map(o -> Long.parseLong(o.toString())).orElse(0L);
+
+        String idBookString = request.getParameter("id");
+        long bookId;
         try {
-            idBook = Long.parseLong(idBookString);
-            accountDAO.removeBookFromUserList(idBook, idUser);
+            bookId = Long.parseLong(idBookString);
+            accountDAO.removeBookFromUserList(bookId, userId);
             //przejście do strony książki
-        } catch (SQLException e) {
+            System.out.println("xx>" + request.getContextPath().toString());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("../list");
+            dispatcher.forward(request, response);
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
             //obsługa błędu
+        } catch (ServletException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet(urlPatterns = {"/userlist/list", "/userlist/delete"}, name = "UsersListServlet")
 
@@ -73,8 +74,13 @@ public class UsersListServlet extends HttpServlet {
     }
 
     private void userlist(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        Optional<Object> objectUserId = Optional.ofNullable(session.getAttribute("userId"));
+        long userId = objectUserId.map(o -> Long.parseLong(o.toString())).orElse(0L);
+
         User user = new User();
-        user.setId(1L);
+        user.setId(userId);
         List<UserBook> usersBookList = userBookDAO.getUsersBookList(user);
         request.setAttribute("usersBookList", usersBookList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("../userlist.jsp");

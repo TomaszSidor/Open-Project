@@ -60,7 +60,17 @@
                     <td>${book.authorSurname}</td>
 
                     <td>
-                        <a href="/account/book/add?id=${book.id}"><i class="material-icons red-text lighten-2">add</i></a>
+
+                        <form action="/account/books?id=${book.id}" method="post">
+                            <button class="btn waves-effect waves-light white red-text lighten-2" type="submit" name="action">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </form>
+                        <form action="/account/books?id=${book.id}" method="delete">
+                            <button class="btn waves-effect waves-light white red-text lighten-2" type="submit" name="action">
+                                <i class="material-icons">remove</i>
+                            </button>
+                        </form>
 
                     </td>
                 </tr>
