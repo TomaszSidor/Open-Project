@@ -84,7 +84,7 @@
                         <button class="btn waves-effect waves-light white red-text lighten-2"
                                 type="submit"
                                 name="action">
-                            <i class="material-icons">star</i>
+                            <i class="material-icons">clear</i>
                         </button>
                     </form>
                 </td>
