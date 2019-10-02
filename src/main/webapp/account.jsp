@@ -56,10 +56,14 @@
                                     <td><b>Total books read</b></td>
                                     <td>65</td>
                                 </tr>
+                                <tr>
+                                    <td colspan="2"><a class="btn btn-primary btn-lg btn-block" href="/logout">Logout</a></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
