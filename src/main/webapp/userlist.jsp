@@ -80,8 +80,14 @@
                 <td>${userBook.rate}</td>
                 <td>${userBook.additionDate}</td>
                 <td>
-                    <a href="/userlist/todelete?id=<c:out value="${userBook.book.id}"/>&title=<c:out value="${userBook.book.title}"/> "
-                       class="btn-small red lighten-2">x</a></td>
+                    <form action="/account/books-delete?id=${userBook.book.id}" method="post">
+                        <button class="btn waves-effect waves-light white red-text lighten-2"
+                                type="submit"
+                                name="action">
+                            <i class="material-icons">star</i>
+                        </button>
+                    </form>
+                </td>
             </tr>
         </c:forEach>
         </tbody>

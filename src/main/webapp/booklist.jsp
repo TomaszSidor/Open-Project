@@ -1,3 +1,5 @@
+<%@ page import="com.github.magdanadratowska.model.UserBook" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -28,18 +30,8 @@
     <jsp:include page="navigator.jsp"></jsp:include>
 </div>
 
-
 <div class="section no-pad-bot">
     <div class="container">
-        <%--        <br><br>--%>
-        <%--        <h1 class="header center orange-text">Starter Template</h1>--%>
-        <%--        <div class="row center">--%>
-        <%--            <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>--%>
-        <%--        </div>--%>
-        <%--        <div class="row center">--%>
-        <%--            <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>--%>
-        <%--        </div>--%>
-        <%--        <br><br>--%>
 
         <h4 class="red-text lighten-2">List of all books</h4>
 
@@ -53,31 +45,57 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="book" items="${requestScope.bookList}">
+
+            <jsp:useBean id="userBookList" scope="request" type="java.util.List"/>
+            <c:forEach var="userBook" items="${userBookList}">
                 <tr>
-                    <td>${book.title}</td>
-                    <td>${book.authorName}</td>
-                    <td>${book.authorSurname}</td>
+                    <td>${userBook.book.title}</td>
+                    <td>${userBook.book.authorName}</td>
+                    <td>${userBook.book.authorSurname}</td>
 
                     <td>
+                        <c:choose>
+                            <c:when test="${userBook.isOwned}">
 
-                        <form action="/account/books?id=${book.id}" method="post">
-                            <button class="btn waves-effect waves-light white red-text lighten-2" type="submit" name="action">
-                                <i class="material-icons">add</i>
-                            </button>
-                        </form>
-                        <form action="/account/books?id=${book.id}" method="delete">
-                            <button class="btn waves-effect waves-light white red-text lighten-2" type="submit" name="action">
-                                <i class="material-icons">remove</i>
-                            </button>
-                        </form>
+                                <c:choose>
+                                    <c:when test="${userBook.isActive}">
+                                        <form action="/account/books-delete?id=${userBook.book.id}" method="post">
+                                            <button class="btn waves-effect waves-light white red-text lighten-2"
+                                                    type="submit"
+                                                    name="action">
+                                                <i class="material-icons">star</i>
+                                            </button>
+                                        </form>
+
+                                    </c:when>
+                                    <c:otherwise>
+                                        <form action="/account/books-add?id=${userBook.book.id}&isOwned=true" method="post">
+                                            <button class="btn waves-effect waves-light white red-text lighten-2"
+                                                    type="submit"
+                                                    name="action">
+                                                <i class="material-icons">delete_forever</i>
+                                            </button>
+                                        </form>
+
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </c:when>
+                            <c:otherwise>
+                                <form action="/account/books-add?id=${userBook.book.id}" method="post">
+                                    <button class="btn waves-effect waves-light white red-text lighten-2" type="submit"
+                                            name="action">
+                                        <i class="material-icons">star_border</i>
+                                    </button>
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
 
                     </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
-
 
         <br>
         <ul class="pagination center">

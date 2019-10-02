@@ -22,7 +22,6 @@ public class AccountBookServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        addBookToUserList(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,9 +30,9 @@ public class AccountBookServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        removeBookFromUserList(req, resp);
     }
 
+    @Deprecated
     private void addBookToUserList(HttpServletRequest request, HttpServletResponse response) {
 
         HttpSession session = request.getSession();
@@ -56,6 +55,7 @@ public class AccountBookServlet extends HttpServlet {
         }
     }
 
+    @Deprecated
     private void removeBookFromUserList(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Optional<Object> objectUserId = Optional.ofNullable(session.getAttribute("userId"));

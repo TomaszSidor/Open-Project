@@ -23,6 +23,10 @@ public class User {
         this.userType = userType;
     }
 
+    public User(Long id) {
+        this.id = id;
+    }
+
     public User() {
     }
 

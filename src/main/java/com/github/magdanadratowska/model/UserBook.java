@@ -7,6 +7,7 @@ public class UserBook {
     private LocalDateTime additionDate;
     private int rate;
     private boolean isActive;
+    private boolean isOwned;
 
     public UserBook() {
     }
@@ -16,6 +17,12 @@ public class UserBook {
         this.additionDate = additionDate;
         this.rate = rate;
         this.isActive =true;
+    }
+
+    public UserBook(Book book, boolean isActive, boolean isOwned) {
+        this.book = book;
+        this.isActive = isActive;
+        this.isOwned = isOwned;
     }
 
     public Book getBook() {
@@ -42,11 +49,19 @@ public class UserBook {
         this.rate = rate;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setIsActive(boolean active) {
         isActive = active;
+    }
+
+    public boolean getIsOwned() {
+        return isOwned;
+    }
+
+    public void setIsOwned(boolean owned) {
+        isOwned = owned;
     }
 }
