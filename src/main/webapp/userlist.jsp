@@ -73,7 +73,7 @@
 
         <tbody>
         <jsp:useBean id="usersBookList" scope="request" type="java.util.List"/>
-        <c:forEach var="userBook" items="${usersBookList}">
+        <c:forEach var="userBook" items="${requestScopeusersBookList}">
             <tr>
                 <td>${userBook.book.authorName} ${userBook.book.authorSurname} </td>
                 <td>${userBook.book.title}</td>
@@ -84,7 +84,7 @@
                         <button class="btn waves-effect waves-light white red-text lighten-2"
                                 type="submit"
                                 name="action">
-                            <i class="material-icons">star</i>
+                            <i class="material-icons">clear</i>
                         </button>
                     </form>
                 </td>
