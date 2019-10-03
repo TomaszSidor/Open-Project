@@ -76,6 +76,7 @@ public class AccountServlet extends HttpServlet {
 
         Book lastBook = accountDAO.getLastReadBook();
         request.setAttribute("lastReadBook", lastBook);
+        request.setAttribute("testAttribute", 5);
         RequestDispatcher dispatcher = request.getRequestDispatcher("account.jsp");
         dispatcher.forward(request, response);
     }

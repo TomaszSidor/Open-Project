@@ -97,13 +97,13 @@
                 </tr>
                 </thead>
                 <tr>
-                    <td>? list of 5 most read books in database ?</td>
+                    <td>Test attribute: <%=request.getAttribute("testAttribute")%></td>
                 </tr>
                 <tr>
-                    <td>? list of 5 most read books in database ?</td>
+                    <td>Test attribute: <c:out value="${requestScope.testAttribute}" /></td>
                 </tr>
                 <tr>
-                    <td>? list of 5 most read books in database ?</td>
+                    <td>Test attribute: <c:out value="${testAttribute}" /></td>
                 </tr>
                 <tr>
                     <td>? list of 5 most read books in database ?</td>
