@@ -105,7 +105,6 @@ public class UserDAO {
         }
     }
 
-
     public void setAdminToUserById(Long userId) throws SQLException {
         Optional<User> optionalUser = getUserById(userId);
         if (optionalUser.isPresent()) {
