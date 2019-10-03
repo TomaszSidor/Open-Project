@@ -23,6 +23,7 @@ public class UserListServlet extends HttpServlet {
         boolean isAdmin = userType.equals("ADMIN");
         if (!isAdmin) {
             resp.sendRedirect("/login");
+
         } else {
 
             List<User> allUsers = new ArrayList<>();
