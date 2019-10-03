@@ -73,7 +73,7 @@
 
         <tbody>
         <jsp:useBean id="usersBookList" scope="request" type="java.util.List"/>
-        <c:forEach var="userBook" items="${requestScopeusersBookList}">
+        <c:forEach var="userBook" items="${requestScope.usersBookList}">
             <tr>
                 <td>${userBook.book.authorName} ${userBook.book.authorSurname} </td>
                 <td>${userBook.book.title}</td>

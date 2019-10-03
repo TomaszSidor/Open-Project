@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,30 @@ public class AccountDAO {
         return connection;
     }
 
+    public List<UserBook> getUsersBookList(User user) {
+        List<UserBook> usersBookList = new ArrayList<>();
 
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS_LIST);) {
+            preparedStatement.setLong(1, user.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int rate = resultSet.getInt("rate");
+                long id = resultSet.getLong("id");
+                String title = resultSet.getString("title");
+                String authorName = resultSet.getString("author_name");
+                String authorSurname = resultSet.getString("author_surname");
+                Book book = new Book(id, title, authorName, authorSurname);
+                String addition_date = resultSet.getString("addition_date");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime additionDate = LocalDateTime.parse(addition_date, formatter);
+                usersBookList.add(new UserBook(book, additionDate, rate));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usersBookList;
+    }
 
     public void addBookToUserList(long idBook, long idUser) throws SQLException {
         try (Connection connection = getConnection()) {

@@ -1,6 +1,6 @@
 package com.github.magdanadratowska.web;
 
-import com.github.magdanadratowska.dao.UserBookDAO;
+import com.github.magdanadratowska.dao.AccountDAO;
 import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserBook;
 
@@ -20,10 +20,10 @@ import java.util.Optional;
 
 public class UsersListServlet extends HttpServlet {
 
-    private UserBookDAO userBookDAO;
+    private AccountDAO accountDAO;
 
     public void init() {
-        userBookDAO = new UserBookDAO();
+        accountDAO = new AccountDAO();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,7 +67,7 @@ public class UsersListServlet extends HttpServlet {
         User user = new User();
         user.setId(1L);
         long id = Long.parseLong(request.getParameter("id"));
-        userBookDAO.deleteBookFromUserList(user, id);
+        accountDAO.deleteBookFromUserList(user, id);
         request.setAttribute("deleted", true);
         RequestDispatcher dispatcher = request.getRequestDispatcher("../userlist/list");
         dispatcher.forward(request, response);
@@ -81,7 +81,7 @@ public class UsersListServlet extends HttpServlet {
 
         User user = new User();
         user.setId(userId);
-        List<UserBook> usersBookList = userBookDAO.getUsersBookList(user);
+        List<UserBook> usersBookList = accountDAO.getUsersBookList(user);
         request.setAttribute("usersBookList", usersBookList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("../userlist.jsp");
         dispatcher.forward(request, response);
