@@ -4,6 +4,8 @@ import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserType;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserDAO {
@@ -12,6 +14,8 @@ public class UserDAO {
     private String jdbcUsername = "m1448_javagda24";
     private String jdbcpassword = "j@vaGda24!";
     private static final String SELECT_USER_BY_ID = "select * from user where id=?;";
+    private static final String DELETE_USER_BY_ID = "delete from user where id=?;";
+    private static final String SELECT_ALL_USERS = "select * from user;";
     private static final String SELECT_USER_BY_EMAIL = "select * from user where email=?;";
     private static final String ADD_USER = "INSERT INTO user (username, email, password, register_date, user_type) VALUES (?, ?, ?, ?, ?);";
 
@@ -26,26 +30,39 @@ public class UserDAO {
         return connection;
     }
 
+
+    public List<User> getAllUsers() throws SQLException {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                users.add(getUserFromDB(resultSet));
+            }
+        }
+        return users;
+    }
+
     public Optional<User> getUserById(Long i) throws SQLException {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID)) {
             preparedStatement.setLong(1, i);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             return Optional.ofNullable(getUserFromDB(resultSet));
         }
     }
 
     private User getUserFromDB(ResultSet resultSet) throws SQLException {
-        User user = null;
-        while (resultSet.next()) {
-            user = new User();
-            user.setId(resultSet.getLong("id"));
-            user.setUsername(resultSet.getString("username"));
-            user.setEmail(resultSet.getString("email"));
-            user.setPassword(resultSet.getString("password"));
-            user.setRegisterDate(resultSet.getTimestamp("register_date").toLocalDateTime());
-            user.setUserType(UserType.valueOf(resultSet.getString("user_type")));
-        }
+        User user = new User();
+        user.setId(resultSet.getLong("id"));
+        user.setUsername(resultSet.getString("username"));
+        user.setEmail(resultSet.getString("email"));
+        user.setPassword(resultSet.getString("password"));
+        user.setRegisterDate(resultSet.getTimestamp("register_date").toLocalDateTime());
+        user.setUserType(UserType.valueOf(resultSet.getString("user_type")));
+
         return user;
     }
 
@@ -74,7 +91,17 @@ public class UserDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_EMAIL);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             return Optional.ofNullable(getUserFromDB(resultSet));
         }
     }
+
+    public void deleteUserById(Long i) throws SQLException {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
+            preparedStatement.setLong(1, i);
+            int update = preparedStatement.executeUpdate();
+        }
+    }
+
 }
