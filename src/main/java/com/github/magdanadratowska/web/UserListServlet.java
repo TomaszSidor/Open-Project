@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet ("/user-list")
+@WebServlet("/user-list")
 public class UserListServlet extends HttpServlet {
     private final UserDAO userDAO = new UserDAO();
 
@@ -23,15 +23,16 @@ public class UserListServlet extends HttpServlet {
         boolean isAdmin = userType.equals("ADMIN");
         if (!isAdmin) {
             resp.sendRedirect("/login");
-        }
+        } else {
 
-        List<User> allUsers = new ArrayList<>();
-        try {
-            allUsers = userDAO.getAllUsers();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            List<User> allUsers = new ArrayList<>();
+            try {
+                allUsers = userDAO.getAllUsers();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            req.setAttribute("users", allUsers);
+            req.getRequestDispatcher("user-list.jsp").forward(req, resp);
         }
-        req.setAttribute("users", allUsers);
-        req.getRequestDispatcher("user-list.jsp").forward(req, resp);
     }
 }

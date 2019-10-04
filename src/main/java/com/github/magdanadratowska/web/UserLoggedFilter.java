@@ -15,7 +15,7 @@ import java.util.Set;
 public class UserLoggedFilter implements Filter {
 
     private static final Set<String> ALLOWED_PATHS = Collections.unmodifiableSet(new HashSet<>(
-            Arrays.asList("", "/login", "/books/list")));
+            Arrays.asList("", "/login", "/books/list", "/user-register")));
 
     private static final Set<String> ALLOWED_PATHS_CSS_JS = Collections.unmodifiableSet(new HashSet<>(
             Arrays.asList("/css/materialize.css", "/css/materialize.min.css",

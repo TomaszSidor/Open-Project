@@ -22,6 +22,7 @@ public class UserBookDAO {
     private static final String RESTORE_BOOK_TO_USER_LIST = "update user_book set is_active = true WHERE (id_user=? AND id_book=?); ";
 
 
+
     protected Connection getConnection() {
         Connection connection = null;
         try {
@@ -99,5 +100,6 @@ public class UserBookDAO {
             e.printStackTrace();
         }
     }
+
 
 }
