@@ -67,6 +67,13 @@
                                 <tr>
                                     <td colspan="2"><a class="btn btn-primary btn-lg btn-block" href="/logout">Logout</a></td>
                                 </tr>
+
+                                <c:if test="${sessionScope.userType eq 'ADMIN'}">
+                                <tr>
+                                    <td colspan="2"><a class="btn btn-primary btn-lg btn-block" href="/user-list">List of users</a></td>
+                                </tr>
+                                </c:if>
+
                                 </tbody>
                             </table>
                         </div>

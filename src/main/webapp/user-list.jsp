@@ -47,7 +47,12 @@
                 <td>${user.getRegisterDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))}</td>
                 <td>${user.getUserType()}</td>
                 <td><a href="/user-delete?userId=${user.getId()}" class="waves-effect waves-light btn red lighten-1">Delete</a></td>
-                <td></td>
+                <c:if test="${user.getUserType() eq 'USER'}">
+                    <td><a href="/setadmin?userId=${user.getId()}" <c:if test="${sessionScope.userId==user.getId()}">disabled</c:if> class="waves-effect waves-light btn red lighten-1">Set admin</a></td>
+                </c:if>
+                <c:if test="${user.getUserType() eq 'ADMIN'}">
+                    <td><a href="/setuser?userId=${user.getId()}" <c:if test="${sessionScope.userId==user.getId()}">disabled</c:if> class="waves-effect waves-light btn red lighten-1">Set user</a></td>
+                </c:if>
             </tr>
         </c:forEach>
         </tbody>

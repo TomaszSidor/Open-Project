@@ -18,6 +18,7 @@ public class UserDAO {
     private static final String SELECT_ALL_USERS = "select * from user;";
     private static final String SELECT_USER_BY_EMAIL = "select * from user where email=?;";
     private static final String ADD_USER = "INSERT INTO user (username, email, password, register_date, user_type) VALUES (?, ?, ?, ?, ?);";
+    private static final String UPDATE_USER = "update user set username=?, email=?, user_type=? where id=?;";
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -104,4 +105,34 @@ public class UserDAO {
         }
     }
 
+
+    public void setAdminToUserById(Long userId) throws SQLException {
+        Optional<User> optionalUser = getUserById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUserType(UserType.ADMIN);
+            updateUser(user);
+        }
+    }
+
+    public void setUserToUserById(Long userId) throws SQLException {
+        Optional<User> optionalUser = getUserById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUserType(UserType.USER);
+            updateUser(user);
+        }
+    }
+
+    private void updateUser(User user) throws SQLException {
+        try (Connection connection = getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER)) {
+                statement.setString(1, user.getUsername());
+                statement.setString(2, user.getEmail());
+                statement.setString(3, user.getUserType().name());
+                statement.setLong(4, user.getId());
+                statement.executeUpdate();
+            }
+        }
+    }
 }

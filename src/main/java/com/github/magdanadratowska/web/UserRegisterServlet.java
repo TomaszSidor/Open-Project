@@ -38,24 +38,30 @@ public class UserRegisterServlet extends HttpServlet {
             user.setRegisterDate(LocalDateTime.now());
             user.setUserType(UserType.USER);
 
-
-            session.setAttribute("loginError", null);
-            session.setAttribute("userId", user.getId());
-            session.setAttribute("userName", user.getUsername());
-            session.setAttribute("userType", user.getUserType());
-            resp.sendRedirect("/account");
-
-
             try {
                 userDAO.addUser(user);
             } catch (SQLException e) {
                 e.printStackTrace();
                 //TODO przekazanie informacji o błędzie
+                resp.sendRedirect("/login.jsp");
             }
+
+            try {
+                User userFromDB = userDAO.getUserByEmail(email).get();
+                session.setAttribute("loginError", null);
+                session.setAttribute("userId", userFromDB.getId());
+                session.setAttribute("userName", userFromDB.getUsername());
+                session.setAttribute("userType", userFromDB.getUserType());
+                resp.sendRedirect("/account");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                //TODO przekazanie informacji o błędzie
+                resp.sendRedirect("/login.jsp");
+            }
+
         } else {
             session.setAttribute("registerError", "repeatPasswordError");
             resp.sendRedirect("/login.jsp");
         }
-
     }
 }
