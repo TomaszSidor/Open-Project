@@ -79,9 +79,7 @@ public class UsersListServlet extends HttpServlet {
         Optional<Object> objectUserId = Optional.ofNullable(session.getAttribute("userId"));
         long userId = objectUserId.map(o -> Long.parseLong(o.toString())).orElse(0L);
 
-        User user = new User();
-        user.setId(userId);
-        List<UserBook> usersBookList = accountDAO.getUsersBookList(user);
+        List<UserBook> usersBookList = accountDAO.getUsersBookList(userId);
         request.setAttribute("usersBookList", usersBookList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("../userlist.jsp");
         dispatcher.forward(request, response);

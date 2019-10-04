@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,12 +40,12 @@ public class AccountDAO {
         return connection;
     }
 
-    public List<UserBook> getUsersBookList(User user) {
+    public List<UserBook> getUsersBookList(long userId) {
         List<UserBook> usersBookList = new ArrayList<>();
 
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS_LIST);) {
-            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int rate = resultSet.getInt("rate");
@@ -55,7 +56,8 @@ public class AccountDAO {
                 Book book = new Book(id, title, authorName, authorSurname);
                 String addition_date = resultSet.getString("addition_date");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDateTime additionDate = LocalDateTime.parse(addition_date, formatter);
+                LocalDateTime additionDateTime = LocalDateTime.parse(addition_date, formatter);
+                LocalDate additionDate = LocalDate.from(additionDateTime);
                 usersBookList.add(new UserBook(book, additionDate, rate));
             }
         } catch (SQLException e) {
@@ -140,7 +142,6 @@ public class AccountDAO {
         changeFlagIsActive(user, bookId, DELETE_BOOK_FROM_USER_LIST);
         logger.info("delete book from user list - userId {} idBook {}", user.getId(), bookId);
     }
-
     public void restoreBookToUserList(User user, Long bookId) {
         changeFlagIsActive(user, bookId, RESTORE_BOOK_TO_USER_LIST);
         logger.info("restore book from user list - userId {} idBook {}", user.getId(), bookId);

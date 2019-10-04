@@ -32,7 +32,7 @@ public class UserBookDAO {
         }
         return connection;
     }
-
+/*
     public List<UserBook> getUsersBookList(User user) {
         List<UserBook> usersBookList = new ArrayList<>();
 
@@ -56,7 +56,7 @@ public class UserBookDAO {
             e.printStackTrace();
         }
         return usersBookList;
-    }
+    }*/
 
     public List<UserBook> getAllBookListForCurrentUserWithDeletedBooks(User user) {
         List<UserBook> usersBookList = new ArrayList<>();
