@@ -64,11 +64,11 @@
             <div class="col m12">
                 <div class="card-panel white">
 
-                    <form>
+                    <form action="/account/books-edit?bookId=${requestScope.userBook.book.id}&action=rate" method="post">
 
                         <div class="row">
                             <label class="col m2 s4">Rate Select</label><br>
-                            <select class="browser-default col m2 s4">
+                            <select class="browser-default col m2 s4" name="rate">
                                 <option value="" disabled selected>Choose</option>
                                 <option value="1" <c:if test="${requestScope.userBook.rate eq '1'}">selected</c:if>>☆</option>
                                 <option value="2" <c:if test="${requestScope.userBook.rate eq '2'}">selected</c:if>>☆☆</option>
@@ -80,7 +80,7 @@
                             </select>
                         </div>
                         <div class="row">
-                            <button class="btn waves-effect waves-light disabled" type="submit" name="action">Rate book
+                            <button class="btn waves-effect waves-light red lighten-2 white-text" type="submit" name="action">Rate book
                                 <i class="material-icons right">sort</i>
                             </button>
                         </div>

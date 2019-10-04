@@ -78,7 +78,7 @@
                 <td>${userBook.book.authorName} ${userBook.book.authorSurname} </td>
                 <td>${userBook.book.title}</td>
                 <td>
-                    <form action="/account/books-edit?bookId=${userBook.book.id}" method="post">
+                    <form action="/account/books-edit?bookId=${userBook.book.id}&action=rate" method="post">
                     <select class="browser-default" name="rate">
                         <option value="" disabled selected>${userBook.rate}</option>
                         <option value="1">1</option>

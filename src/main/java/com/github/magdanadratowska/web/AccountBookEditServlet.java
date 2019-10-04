@@ -22,14 +22,16 @@ public class AccountBookEditServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        updateBooksRate(request, response);
-
+        String action = request.getParameter("action");
+        if (action.equals("rate")) {
+            updateBooksRate(request, response);
+        } else if (action.equals("review")){
+            updateBooksReview(request, response);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getBookDetail(request, response);
-
     }
 
     private void getBookDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,10 +53,19 @@ public class AccountBookEditServlet extends HttpServlet {
         response.sendRedirect(request.getHeader("referer"));
     }
 
+    private void updateBooksReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        long userId = getUserIdFromSessionRequest(request);
+        long bookId = Long.parseLong(request.getParameter("bookId"));
+        int rate = Integer.parseInt(request.getParameter("review"));
+
+        //do poprawy
+        accountDAO.updateBookRate(rate, userId, bookId);
+        response.sendRedirect(request.getHeader("referer"));
+    }
+
     private long getUserIdFromSessionRequest(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Optional<Object> objectUserId = Optional.ofNullable(session.getAttribute( "userId"));
         return objectUserId.map(o -> Long.parseLong(o.toString())).orElse(0L);
-
     }
 }
