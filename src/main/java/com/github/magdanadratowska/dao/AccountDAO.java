@@ -28,6 +28,7 @@ public class AccountDAO {
     private static final String SELECT_ALL_BOOKS_LIST_FOR_CURRENT_USER_WITH_DELETED_BOOKS = "select * from book B left join (select id as id2, is_active from (select * from book, user_book where (user_book.id_book = book.id)) T where id_user =?) U on (U.id2 = B.id)";
     private static final String DELETE_BOOK_FROM_USER_LIST = "update user_book set is_active = false WHERE (id_user=? AND id_book=?)";
     private static final String RESTORE_BOOK_TO_USER_LIST = "update user_book set is_active = true WHERE (id_user=? AND id_book=?)";
+    private static final String UPDATE_BOOK_RATE = "update user_book set rate = ? where (id_user=? and id_book=?);";
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -142,6 +143,7 @@ public class AccountDAO {
         changeFlagIsActive(user, bookId, DELETE_BOOK_FROM_USER_LIST);
         logger.info("delete book from user list - userId {} idBook {}", user.getId(), bookId);
     }
+
     public void restoreBookToUserList(User user, Long bookId) {
         changeFlagIsActive(user, bookId, RESTORE_BOOK_TO_USER_LIST);
         logger.info("restore book from user list - userId {} idBook {}", user.getId(), bookId);
@@ -158,5 +160,17 @@ public class AccountDAO {
         }
     }
 
+    public void updateBookRate(int rate, long userId, long bookId) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_RATE);) {
+            preparedStatement.setInt(1, rate);
+            preparedStatement.setLong(2, userId);
+            preparedStatement.setLong(3, bookId);
+            preparedStatement.executeUpdate();
+            logger.info("update rate for book on user list- userId {} idBook {} rate{}", userId, bookId, rate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+    }
 }

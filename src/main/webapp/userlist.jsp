@@ -77,7 +77,23 @@
             <tr>
                 <td>${userBook.book.authorName} ${userBook.book.authorSurname} </td>
                 <td>${userBook.book.title}</td>
-                <td>${userBook.rate}</td>
+                <td>
+                    <form action="/account/books-edit?bookId=${userBook.book.id}" method="post">
+                    <select class="browser-default" name="rate">
+                        <option value="" disabled selected>${userBook.rate}</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                        <button class="btn waves-effect waves-light white red-text lighten-2"
+                                type="submit"
+                                name="action">
+                            <i class="material-icons">add</i>
+                        </button>
+                    </form>
+                </td>
                 <td>${userBook.additionDate}</td>
                 <td>
                     <form action="/account/books-delete?id=${userBook.book.id}" method="post">
