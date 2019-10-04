@@ -56,10 +56,9 @@ public class AccountBookEditServlet extends HttpServlet {
     private void updateBooksReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
         long userId = getUserIdFromSessionRequest(request);
         long bookId = Long.parseLong(request.getParameter("bookId"));
-        int rate = Integer.parseInt(request.getParameter("review"));
+        String review = request.getParameter("review");
 
-        //do poprawy
-        accountDAO.updateBookRate(rate, userId, bookId);
+        accountDAO.updateBookReview(review, userId, bookId);
         response.sendRedirect(request.getHeader("referer"));
     }
 

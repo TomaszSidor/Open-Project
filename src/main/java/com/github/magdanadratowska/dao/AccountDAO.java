@@ -28,7 +28,8 @@ public class AccountDAO {
     private static final String SELECT_BOOK_DETAIL_FOR_CURRENT_USER = "select * from (select * from book where book.id =?) T left join (select * from user_book where id_user =?) L on (T.id = L.id_book);";
     private static final String DELETE_BOOK_FROM_USER_LIST = "update user_book set is_active = false WHERE (id_user=? AND id_book=?)";
     private static final String RESTORE_BOOK_TO_USER_LIST = "update user_book set is_active = true WHERE (id_user=? AND id_book=?)";
-    private static final String UPDATE_BOOK_RATE = "update user_book set rate = ? where (id_user=? and id_book=?);";
+    private static final String UPDATE_BOOK_RATE = "update user_book set rate = ? where (id_user=? and id_book=?)";
+    private static final String UPDATE_BOOK_REVIEW = "update user_book set review = ? where (id_user=? and id_book=?)";
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -190,10 +191,22 @@ public class AccountDAO {
             preparedStatement.setLong(2, userId);
             preparedStatement.setLong(3, bookId);
             preparedStatement.executeUpdate();
-            logger.info("update rate for book on user list- userId {} idBook {} rate{}", userId, bookId, rate);
+            logger.info("update rate for book on user list- userId {} idBook {} rate {}", userId, bookId, rate);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public void updateBookReview(String review, long userId, long bookId) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_REVIEW);) {
+            preparedStatement.setString(1, review);
+            preparedStatement.setLong(2, userId);
+            preparedStatement.setLong(3, bookId);
+            preparedStatement.executeUpdate();
+            logger.info("update review for book on user list- userId {} idBook {} review {}", userId, bookId, review);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
