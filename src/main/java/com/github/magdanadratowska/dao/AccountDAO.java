@@ -30,6 +30,7 @@ public class AccountDAO {
     private static final String RESTORE_BOOK_TO_USER_LIST = "update user_book set is_active = true WHERE (id_user=? AND id_book=?)";
     private static final String UPDATE_BOOK_RATE = "update user_book set rate = ? where (id_user=? and id_book=?)";
     private static final String UPDATE_BOOK_REVIEW = "update user_book set review = ? where (id_user=? and id_book=?)";
+    private static final String COUNT_READ_USERS_BOOK = "select count(*) from user_book where id_user=?;";
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -138,14 +139,14 @@ public class AccountDAO {
         return userBook;
     }
 
-    public Book getLastReadBook() {
+    public Book getLastReadBook(long userId) {
         Connection connection = getConnection();
         PreparedStatement preparedStatement = null;
         Book book = new Book();
         try {
             preparedStatement = connection.prepareStatement(SELECT_LAST_BOOKS);
             {
-                preparedStatement.setLong(1, 1); //user.getId());
+                preparedStatement.setLong(1, userId);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
@@ -153,7 +154,6 @@ public class AccountDAO {
                     book.setAuthorName(resultSet.getString("author_name"));
                     book.setAuthorSurname(resultSet.getString("author_surname"));
                     book.setTitle(resultSet.getString("title"));
-                    System.out.println(book.toString());
                 }
             }
 
@@ -161,6 +161,23 @@ public class AccountDAO {
             e.printStackTrace();
         }
         return book;
+    }
+
+    public long sumOfReadUserBooks(long userId) throws SQLException {
+        long sumOfReadBooks = 0;
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement statement = connection.prepareStatement(COUNT_READ_USERS_BOOK, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setLong(1, userId);
+                ResultSet resultSet = statement.executeQuery();
+                resultSet.next();
+                sumOfReadBooks = resultSet.getLong("count(*)");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return sumOfReadBooks;
+
     }
 
     public void deleteBookFromUserList(User user, Long bookId) {

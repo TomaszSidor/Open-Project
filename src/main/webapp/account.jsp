@@ -46,15 +46,23 @@
                                 <tbody>
                                 <tr>
                                     <td><b>Your Name</b></td>
-                                    <td>TomaszSidor</td>
+                                    <td><%=request.getAttribute("userName")%></td>
+                                </tr>
+                                <tr>
+                                    <td><b>User type</b></td>
+                                    <td><%=request.getAttribute("type")%></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Register date</b></td>
+                                    <td><%=request.getAttribute("registerDate")%></td>
                                 </tr>
                                 <tr>
                                     <td><b>Your email</b></td>
-                                    <td>tom@tom.tom</td>
+                                    <td><%=request.getAttribute("email")%></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Total books read</b></td>
-                                    <td>65</td>
+                                    <td><b>Total books read </b></td>
+                                    <td><%=request.getAttribute("sumOfReadBooks")%></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><a class="btn btn-primary btn-lg btn-block" href="/logout">Logout</a></td>
