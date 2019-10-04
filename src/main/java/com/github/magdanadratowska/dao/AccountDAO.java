@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class AccountDAO {
                 String addition_date = resultSet.getString("addition_date");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime additionDateTime = LocalDateTime.parse(addition_date, formatter);
-                LocalDate additionDate = LocalDate.from(additionDateTime);
+                LocalDateTime additionDate = LocalDateTime.from(additionDateTime);
                 usersBookList.add(new UserBook(book, additionDate, rate));
             }
         } catch (SQLException e) {

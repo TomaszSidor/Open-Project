@@ -1,22 +1,19 @@
 package com.github.magdanadratowska.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class UserBook {
     private Book book;
-    private LocalDate additionDate;
+    private LocalDateTime additionDate;
     private int rate;
     private boolean isActive;
     private boolean isOwned;
     private String review;
 
-
-
     public UserBook() {
     }
 
-    public UserBook(Book book, LocalDate additionDate, int rate) {
+    public UserBook(Book book, LocalDateTime additionDate, int rate) {
         this.book = book;
         this.additionDate = additionDate;
         this.rate = rate;
@@ -45,11 +42,11 @@ public class UserBook {
         this.book = book;
     }
 
-    public LocalDate getAdditionDate() {
+    public LocalDateTime getAdditionDate() {
         return additionDate;
     }
 
-    public void setAdditionDate(LocalDate additionDate) {
+    public void setAdditionDate(LocalDateTime additionDate) {
         this.additionDate = additionDate;
     }
 
