@@ -28,12 +28,10 @@ public class AccountDAO {
     private static final String SELECT_BOOK_DETAIL_FOR_CURRENT_USER = "select * from (select * from book where book.id =?) T left join (select * from user_book where id_user =?) L on (T.id = L.id_book);";
     private static final String DELETE_BOOK_FROM_USER_LIST = "update user_book set is_active = false WHERE (id_user=? AND id_book=?)";
     private static final String RESTORE_BOOK_TO_USER_LIST = "update user_book set is_active = true WHERE (id_user=? AND id_book=?)";
-
     private static final String UPDATE_BOOK_RATE = "update user_book set rate = ? where (id_user=? and id_book=?)";
     private static final String UPDATE_BOOK_REVIEW = "update user_book set review = ? where (id_user=? and id_book=?)";
     private static final String COUNT_READ_USERS_BOOK = "select count(*) from user_book where id_user=?;";
     private static final String DELETE_USER_RECORDS = "delete from user_book where id_user = ?;";
-
 
     protected Connection getConnection() {
         Connection connection = null;
