@@ -1,7 +1,6 @@
 package com.github.magdanadratowska.web;
 
 import com.github.magdanadratowska.dao.AccountDAO;
-import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserBook;
 
 import javax.servlet.RequestDispatcher;
@@ -16,10 +15,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+
 @WebServlet(urlPatterns = "/account/books", name = "AccountBookServlet")
 public class AccountBookServlet extends HttpServlet {
 
-    AccountDAO accountDAO;
+    private AccountDAO accountDAO;
     public void init() {
         accountDAO = new AccountDAO();
     }
@@ -38,6 +38,7 @@ public class AccountBookServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     }
+
 
     private void readUserBooksList(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 
@@ -96,4 +97,5 @@ public class AccountBookServlet extends HttpServlet {
             e.printStackTrace();
         }
     }*/
+
 }

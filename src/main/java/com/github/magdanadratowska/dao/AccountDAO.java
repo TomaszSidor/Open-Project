@@ -26,6 +26,7 @@ public class AccountDAO {
     private static final String REMOVE_BOOK_FROM_USER_LIST = "delete from user_book where id_user=? and id_book=?";
     private static final String SELECT_USERS_LIST = "select * from (select * from user_book, book where (user_book.id_book = book.id AND is_active=true)) T where id_user =?";
     private static final String SELECT_ALL_BOOKS_LIST_FOR_CURRENT_USER_WITH_DELETED_BOOKS = "select * from book B left join (select id as id2, is_active from (select * from book, user_book where (user_book.id_book = book.id)) T where id_user =?) U on (U.id2 = B.id)";
+    private static final String SELECT_BOOK_DETAIL_FOR_CURRENT_USER = "select * from (select * from book where book.id =?) T left join (select * from user_book where id_user =?) L on (T.id = L.id_book);";
     private static final String DELETE_BOOK_FROM_USER_LIST = "update user_book set is_active = false WHERE (id_user=? AND id_book=?)";
     private static final String RESTORE_BOOK_TO_USER_LIST = "update user_book set is_active = true WHERE (id_user=? AND id_book=?)";
     private static final String UPDATE_BOOK_RATE = "update user_book set rate = ? where (id_user=? and id_book=?);";
@@ -112,6 +113,29 @@ public class AccountDAO {
             e.printStackTrace();
         }
         return usersBookList;
+    }
+
+    public UserBook getBookDetailForCurrentUser(long bookId, User user) {
+        UserBook userBook = null;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BOOK_DETAIL_FOR_CURRENT_USER);) {
+            preparedStatement.setLong(1, bookId);
+            preparedStatement.setLong(2, user.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                String authorName = resultSet.getString("author_name");
+                String authorSurname = resultSet.getString("author_surname");
+                Book book = new Book(bookId, title, authorName, authorSurname);
+                int rate = resultSet.getInt("rate");
+                boolean isActive = resultSet.getBoolean("is_active");
+                String review = resultSet.getString("review");
+                userBook = new UserBook(book, LocalDateTime.now(), rate, isActive, review);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userBook;
     }
 
     public Book getLastReadBook() {

@@ -41,6 +41,7 @@
                 <th>Title</th>
                 <th>Author name</th>
                 <th>Author surname</th>
+                <th>Details</th>
                 <th>My list</th>
             </tr>
             </thead>
@@ -52,6 +53,17 @@
                     <td>${userBook.book.title}</td>
                     <td>${userBook.book.authorName}</td>
                     <td>${userBook.book.authorSurname}</td>
+
+                    <td>
+                        <form action="/account/books-edit" method="get">
+                            <input type="hidden" id="id" name="id" value="${userBook.book.id}">
+                            <button class="btn waves-effect waves-light white red-text lighten-2"
+                                    type="submit"
+                                    name="action">
+                                <i class="material-icons">description</i>
+                            </button>
+                        </form>
+                    </td>
 
                     <td>
                         <c:choose>
@@ -69,7 +81,8 @@
 
                                     </c:when>
                                     <c:otherwise>
-                                        <form action="/account/books-add?id=${userBook.book.id}&isOwned=true" method="post">
+                                        <form action="/account/books-add?id=${userBook.book.id}&isOwned=true"
+                                              method="post">
                                             <button class="btn waves-effect waves-light white red-text lighten-2"
                                                     type="submit"
                                                     name="action">

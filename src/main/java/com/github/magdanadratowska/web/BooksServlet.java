@@ -1,7 +1,7 @@
 package com.github.magdanadratowska.web;
 
 
-import com.github.magdanadratowska.dao.UserBookDAO;
+import com.github.magdanadratowska.dao.AccountDAO;
 import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserBook;
 
@@ -20,10 +20,10 @@ import java.util.Optional;
 @WebServlet(urlPatterns = {"/books"}, name = "BooksServlet")
 public class BooksServlet extends HttpServlet {
 
-    private UserBookDAO userBookDAO;
+    private AccountDAO accountDAO;
 
     public void init() {
-        userBookDAO = new UserBookDAO();
+        accountDAO = new AccountDAO();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,7 +52,7 @@ public class BooksServlet extends HttpServlet {
 //            book.ifPresent(b -> request.setAttribute("bookList", Collections.singletonList(b)));
             dispatcher = request.getRequestDispatcher("booklist.jsp");
         } else {
-            List<UserBook> userBookList = userBookDAO.getAllBookListForCurrentUserWithDeletedBooks(user);
+            List<UserBook> userBookList = accountDAO.getAllBookListForCurrentUserWithDeletedBooks(user);
             request.setAttribute("userBookList", userBookList);
             dispatcher = request.getRequestDispatcher("booklist.jsp");
         }
