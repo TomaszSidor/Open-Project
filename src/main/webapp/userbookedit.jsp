@@ -41,31 +41,32 @@
         <div class="row">
             <div class="col m12">
                 <div class="card-panel white">
-                    <form action="/account/books-edit" method="post">
+                    <form action="/books-edit" method="post">
                         <div class="row">
                             <div class="input-field">
-                                <input value="${requestScope.userBook.book.title}" id="title" type="text"
+                                <input type="hidden" value="${requestScope.userBook.book.id}" id="id" name="id">
+                                <input value="${requestScope.userBook.book.title}" id="title" name="title" type="text"
                                        class="validate">
                                 <label for="title">Book title</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field">
-                                <input value="${requestScope.userBook.book.authorName}" id="author_name" type="text"
+                                <input value="${requestScope.userBook.book.authorName}" id="author_name" name="author_name" type="text"
                                        class="validate">
                                 <label for="author_name">Author name</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field">
-                                <input value="${requestScope.userBook.book.authorSurname}" id="author_surname"
+                                <input value="${requestScope.userBook.book.authorSurname}" id="author_surname" name="author_surname"
                                        type="text"
                                        class="validate">
                                 <label for="author_surname">Author surname</label>
                             </div>
                         </div>
                         <div class="row">
-                            <button class="btn waves-effect waves-light disabled" type="submit" name="action">Update
+                            <button class="btn waves-effect waves-light red lighten-2 white-text" type="submit" name="action">Update
                                 book
                                 <i class="material-icons right">edit</i>
                             </button>

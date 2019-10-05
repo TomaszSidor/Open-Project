@@ -1,6 +1,8 @@
 package com.github.magdanadratowska.dao;
 
 import com.github.magdanadratowska.model.Book;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,8 +14,12 @@ public class BookDAO {
     private String jdbcURL = "jdbc:mysql://mysql10.mydevil.net:3306/m1448_proj_read?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private String jdbcUsername = "m1448_javagda24";
     private String jdbcpassword = "j@vaGda24!";
+
+    private Logger logger = LoggerFactory.getLogger(BookDAO.class);
+
     private static final String SELECT_ALL_BOOKS = "select * from book;";
     private static final String SELECT_BOOK_BY_ID = "select * from book where id=?;";
+    private static final String UPDATE_BOOK = "update book set title = ?, author_name = ?, author_surname = ? where id = ?";
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -26,6 +32,21 @@ public class BookDAO {
         return connection;
     }
 
+    public void updateBook(long bookId, String title, String author_name, String author_surname) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK);) {
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, author_name);
+            preparedStatement.setString(3, author_surname);
+            preparedStatement.setLong(4, bookId);
+            preparedStatement.executeUpdate();
+            logger.info("update book - idBook {} title {} author_name {} author_surname {}", bookId, title, author_name, author_surname);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Deprecated
     public List<Book> readBooksList() {
         List<Book> books = new ArrayList<>();
         try (Connection connection = getConnection();
@@ -44,6 +65,7 @@ public class BookDAO {
         return books;
     }
 
+    @Deprecated
     public Optional<Book> readBook(long id) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BOOK_BY_ID);) {
