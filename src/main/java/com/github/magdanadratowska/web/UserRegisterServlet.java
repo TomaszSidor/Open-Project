@@ -37,11 +37,6 @@ public class UserRegisterServlet extends HttpServlet {
             user.setPassword(password);
             user.setRegisterDate(LocalDateTime.now());
             user.setUserType(UserType.USER);
-            session.setAttribute("loginError", null);
-            session.setAttribute("userId", user.getId());
-            session.setAttribute("userName", user.getUsername());
-            session.setAttribute("userType", user.getUserType());
-            resp.sendRedirect("/account");
 
             try {
                 userDAO.addUser(user);
