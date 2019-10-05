@@ -32,7 +32,11 @@
 
 <div class="section no-pad-bot">
     <div class="container">
-
+        <form action="/books-edit" method="get">
+            <button class="btn waves-effect waves-light red lighten-2 white-text" type="submit" name="action">Add book
+                <i class="material-icons right">add</i>
+            </button>
+        </form>
         <h4 class="red-text lighten-2">List of all books</h4>
 
         <table class="highlight">
