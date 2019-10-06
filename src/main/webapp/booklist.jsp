@@ -32,11 +32,9 @@
 
 <div class="section no-pad-bot">
     <div class="container">
-        <form action="/books-edit" method="get">
-            <button class="btn waves-effect waves-light red lighten-2 white-text" type="submit" name="action">Add book
-                <i class="material-icons right">add</i>
-            </button>
-        </form>
+        <a class="btn waves-effect waves-light red lighten-2 white-text" href="/books-add">Add book
+            <i class="material-icons right">add</i>
+        </a>
         <h4 class="red-text lighten-2">List of all books</h4>
 
         <table class="highlight">
@@ -59,14 +57,24 @@
                     <td>${userBook.book.authorSurname}</td>
 
                     <td>
-                        <form action="/account/books-edit" method="get">
-                            <input type="hidden" id="id" name="id" value="${userBook.book.id}">
-                            <button class="btn waves-effect waves-light white red-text lighten-2"
-                                    type="submit"
-                                    name="action">
-                                <i class="material-icons">description</i>
-                            </button>
-                        </form>
+                        <c:choose>
+                            <c:when test="${userBook.isOwned}">
+                                <form action="/account/books-edit" method="get">
+                                    <input type="hidden" id="id" name="id" value="${userBook.book.id}">
+                                    <button class="btn waves-effect waves-light white red-text lighten-2" type="submit">
+                                        <i class="material-icons">description</i>
+                                    </button>
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <form action="/books-edit" method="get">
+                                    <input type="hidden" id="id_e" name="id" value="${userBook.book.id}">
+                                    <button class="btn waves-effect waves-light white red-text lighten-2" type="submit">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
 
                     <td>

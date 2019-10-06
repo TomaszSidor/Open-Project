@@ -1,6 +1,7 @@
 package com.github.magdanadratowska.web;
 
 import com.github.magdanadratowska.dao.BookDAO;
+import com.github.magdanadratowska.model.Book;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet(urlPatterns = {"/books-edit"}, name = "BookEditServlet")
 public class BookEditServlet extends HttpServlet {
@@ -24,7 +26,10 @@ public class BookEditServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        Long idBook = Long.parseLong(request.getParameter("id"));
+        Optional<Book> bookOptional = bookDAO.findBookById(idBook);
+        bookOptional.ifPresent(book -> request.setAttribute("book", book));
+        request.getRequestDispatcher("book-form.jsp").forward(request, response);
     }
 
     private void updateBook(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -32,11 +37,6 @@ public class BookEditServlet extends HttpServlet {
         String title = request.getParameter("title");
         String authorName = request.getParameter("author_name");
         String authorSurname = request.getParameter("author_surname");
-        System.out.println(title);
-        System.out.println(bookId);
-        System.out.println(authorName);
-        System.out.println(authorSurname);
-
         bookDAO.updateBook(bookId, title, authorName, authorSurname);
         response.sendRedirect(request.getHeader("referer"));
     }
