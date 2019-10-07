@@ -124,43 +124,46 @@
 
         <br>
         <ul class="pagination center">
-            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-            <li class="active"><a href="#!">1</a></li>
-            <li class="waves-effect"><a href="#!">2</a></li>
-            <li class="waves-effect"><a href="#!">3</a></li>
-            <li class="waves-effect"><a href="#!">4</a></li>
-            <li class="waves-effect"><a href="#!">5</a></li>
-            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+
+
+            <%--For displaying Previous link except for the 1st page --%>
+            <c:choose>
+                <c:when test="${currentPage != 1}">
+                    <li class="waves-effect"><a href="/books?page=${currentPage - 1}"><i class="material-icons">chevron_left</i></a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="disabled"><a href=""><i
+                            class="material-icons">chevron_left</i></a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+            <%--For displaying Page numbers.
+            The when condition does not display a link for the current page--%>
+            <c:forEach begin="1" end="${noOfPages}" var="i">
+                <c:choose>
+                    <c:when test="${currentPage eq i}">
+                        <%--                            <td>${i}</td>--%>
+                        <li class="active"><a href="#!">${i}</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <%--                            <td><a href="/books?page=${i}">${i}</a></td>--%>
+                        <li class="waves-effect"><a href="/books?page=${i}">${i}</a></li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <%--For displaying Next link --%>
+            <c:choose>
+                <c:when test="${currentPage lt noOfPages}">
+                    <li class="waves-effect"><a href="/books?page=${currentPage + 1}"><i class="material-icons">chevron_right</i></a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="disabled"><a href=""><i class="material-icons">chevron_right</i></a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
         </ul>
-
-        <%--For displaying Previous link except for the 1st page --%>
-        <c:if test="${currentPage != 1}">
-            <td><a href="/books?page=${currentPage - 1}">Previous</a></td>
-        </c:if>
-
-        <%--For displaying Page numbers.
-        The when condition does not display a link for the current page--%>
-        <table border="1" cellpadding="5" cellspacing="5">
-            <tr>
-                <c:forEach begin="1" end="${noOfPages}" var="i">
-                    <c:choose>
-                        <c:when test="${currentPage eq i}">
-                            <td>${i}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td><a href="/books?page=${i}">${i}</a></td>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </tr>
-        </table>
-
-        <%--For displaying Next link --%>
-        <c:if test="${currentPage lt noOfPages}">
-            <td><a href="/books?page=${currentPage + 1}">Next</a></td>
-        </c:if>
-
-
 
 
     </div>
