@@ -24,7 +24,8 @@ public class AccountDAO {
     private static final String ADD_BOOK_TO_USER_LIST = "insert into user_book (id_user, id_book, addition_date) values (?, ?, ?)";
     private static final String REMOVE_BOOK_FROM_USER_LIST = "delete from user_book where id_user=? and id_book=?";
     private static final String SELECT_USERS_LIST = "select * from (select * from user_book, book where (user_book.id_book = book.id AND is_active=true)) T where id_user =?";
-    private static final String SELECT_ALL_BOOKS_LIST_FOR_CURRENT_USER_WITH_DELETED_BOOKS = "select * from book B left join (select id as id2, is_active from (select * from book, user_book where (user_book.id_book = book.id)) T where id_user =?) U on (U.id2 = B.id)";
+    private static final String SELECT_ALL_BOOKS_LIST_FOR_CURRENT_USER_WITH_DELETED_BOOKS = "select * from book B left join (select id as id2, is_active from (select * from book, user_book where (user_book.id_book = book.id)) T where id_user =?) U on (U.id2 = B.id) limit ?, ?";
+    private static final String COUNT_SELECT_ALL_BOOKS = "select count(*) as count from book";
     private static final String SELECT_BOOK_DETAIL_FOR_CURRENT_USER = "select * from (select * from book where book.id =?) T left join (select * from user_book where id_user =?) L on (T.id = L.id_book);";
     private static final String DELETE_BOOK_FROM_USER_LIST = "update user_book set is_active = false WHERE (id_user=? AND id_book=?)";
     private static final String RESTORE_BOOK_TO_USER_LIST = "update user_book set is_active = true WHERE (id_user=? AND id_book=?)";
@@ -94,12 +95,14 @@ public class AccountDAO {
         }
     }
 
-    public List<UserBook> getAllBookListForCurrentUserWithDeletedBooks(User user) {
+    public List<UserBook> getAllBookListForCurrentUserWithDeletedBooks(User user, long limitFrom, long numberOfRows) {
         List<UserBook> usersBookList = new ArrayList<>();
 
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKS_LIST_FOR_CURRENT_USER_WITH_DELETED_BOOKS);) {
             preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(2, limitFrom);
+            preparedStatement.setLong(3, numberOfRows);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
@@ -115,6 +118,20 @@ public class AccountDAO {
             e.printStackTrace();
         }
         return usersBookList;
+    }
+
+    public Long countAllBook(){
+        long result = 0;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(COUNT_SELECT_ALL_BOOKS);) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                result = resultSet.getLong("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public UserBook getBookDetailForCurrentUser(long bookId, User user) {

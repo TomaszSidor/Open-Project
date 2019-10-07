@@ -5,7 +5,6 @@ import com.github.magdanadratowska.dao.AccountDAO;
 import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserBook;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,18 +43,16 @@ public class BooksServlet extends HttpServlet {
         Optional<Object> objectUserId = Optional.ofNullable(session.getAttribute("userId"));
         long userId = objectUserId.map(o -> Long.parseLong(o.toString())).orElse(0L);
         User user = new User(userId);
-
-        RequestDispatcher dispatcher;
-        Optional<String> id = Optional.ofNullable(request.getParameter("id"));
-        if (id.isPresent()){
-//            Optional<UserBook> book = userBookDAO.(Long.parseLong(id.get()));
-//            book.ifPresent(b -> request.setAttribute("bookList", Collections.singletonList(b)));
-            dispatcher = request.getRequestDispatcher("booklist.jsp");
-        } else {
-            List<UserBook> userBookList = accountDAO.getAllBookListForCurrentUserWithDeletedBooks(user);
-            request.setAttribute("userBookList", userBookList);
-            dispatcher = request.getRequestDispatcher("booklist.jsp");
-        }
-        dispatcher.forward(request, response);
+        long numberOfBooks = accountDAO.countAllBook();
+        Optional<String> pageStringOptional = Optional.ofNullable(request.getParameter("page"));
+        long page = Long.parseLong(pageStringOptional.orElse("1"));
+        long noOfPages = Math.round(numberOfBooks / 5.0);
+        System.out.println(page);
+        System.out.println(page *5 - 5);
+        List<UserBook> userBookList = accountDAO.getAllBookListForCurrentUserWithDeletedBooks(user, (page * 5 - 5), 5);
+        request.setAttribute("userBookList", userBookList);
+        request.setAttribute("noOfPages", noOfPages);
+        request.setAttribute("currentPage", page);
+        request.getRequestDispatcher("booklist.jsp").forward(request, response);
     }
 }

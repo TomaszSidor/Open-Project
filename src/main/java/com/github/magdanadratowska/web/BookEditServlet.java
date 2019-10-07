@@ -26,7 +26,14 @@ public class BookEditServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long idBook = Long.parseLong(request.getParameter("id"));
+        long idBook;
+        try {
+            idBook = Long.parseLong(request.getParameter("id"));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect("/books");
+            return;
+        }
         Optional<Book> bookOptional = bookDAO.findBookById(idBook);
         bookOptional.ifPresent(book -> request.setAttribute("book", book));
         request.getRequestDispatcher("book-form.jsp").forward(request, response);
