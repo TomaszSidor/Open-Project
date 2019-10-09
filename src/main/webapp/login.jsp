@@ -20,8 +20,9 @@
 <div class="container">
 
     <div class="row">
-        <jsp:include page="navigator.jsp"></jsp:include>
+        <%@include file="navigator.jsp" %>
     </div>
+
 
     <div class="row">
         <div class="col s12 m6">
