@@ -32,12 +32,11 @@ public class BooksSearchServlet extends HttpServlet {
         Optional<Object> objectUserId = Optional.ofNullable(session.getAttribute("userId"));
         long userId = objectUserId.map(o -> Long.parseLong(o.toString())).orElse(0L);
         User user = new User(userId);
-        long numberOfBooks = accountDAO.countAllBook();
         Optional<String> pageStringOptional = Optional.ofNullable(request.getParameter("page"));
         long page = Long.parseLong(pageStringOptional.orElse("1"));
         Optional<String> queryStringOptional = Optional.ofNullable(request.getParameter("query"));
         String query = queryStringOptional.orElse("");
-        System.out.println("query: " + query);
+        long numberOfBooks = accountDAO.countAllBookListForCurrentUserWithQuery(user, query);
         long noOfPages = Math.round(numberOfBooks / 5.0);
         List<UserBook> userBookList = accountDAO.getAllBookListForCurrentUserWithQuery(user, query, (page * 5 - 5), 5);
         request.setAttribute("userBookList", userBookList);
