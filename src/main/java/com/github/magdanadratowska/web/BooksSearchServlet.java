@@ -37,6 +37,7 @@ public class BooksSearchServlet extends HttpServlet {
         long page = Long.parseLong(pageStringOptional.orElse("1"));
         Optional<String> queryStringOptional = Optional.ofNullable(request.getParameter("query"));
         String query = queryStringOptional.orElse("");
+        System.out.println("query: " + query);
         long noOfPages = Math.round(numberOfBooks / 5.0);
         List<UserBook> userBookList = accountDAO.getAllBookListForCurrentUserWithQuery(user, query, (page * 5 - 5), 5);
         request.setAttribute("userBookList", userBookList);

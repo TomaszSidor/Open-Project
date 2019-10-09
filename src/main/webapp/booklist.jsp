@@ -38,6 +38,9 @@
 <div class="row">
     <jsp:include page="navigator.jsp"></jsp:include>
 </div>
+<%
+    String getQuery = (String) request.getAttribute("query");
+%>
 
 <div class="section no-pad-bot">
     <div class="container">
@@ -80,6 +83,7 @@
                 <tbody>
 
                 <jsp:useBean id="userBookList" scope="request" type="java.util.List"/>
+
                 <c:forEach var="userBook" items="${userBookList}">
                     <tr>
                         <td>${userBook.book.title}</td>
@@ -188,11 +192,18 @@
                 <%--For displaying Next link --%>
                 <c:choose>
                     <c:when test="${currentPage lt noOfPages}">
-                        <li class="waves-effect"><a href="/books?page=${currentPage + 1}"><i class="material-icons">chevron_right</i></a>
+<%--                        <c:url var="queryNextTrue" value="books" context="?page=${currentPage + 1}"/>--%>
+<%--                        <c:url var="queryNextFalse" context="/books-search?page=${requestScope.currentPage+1}&query=${requestScope.query}"/>--%>
+<%--                        ${queryNextTrue}--%>
+<%--                        ${queryNextFalse}--%>
+
+<%--                        <li class="waves-effect"><a href="/books?page=${currentPage + 1}"><i class="material-icons">chevron_right</i></a>--%>
+<%--                        <li class="waves-effect"><a href="/books?page=${(currentPage + 1)}${requestScope.query == null ? "" : "&query="}${requestScope.query==null ? "" : requestScope.query}"><i class="material-icons">chevron_right</i></a>--%>
+                        <li class="waves-effect"><a href="aaa"><i class="material-icons">chevron_right</i></a>
                         </li>
                     </c:when>
                     <c:otherwise>
-                        <li class="disabled"><a href=""><i class="material-icons">chevron_right</i></a>
+                        <li class="disabled"><a href=""><i class="material-icons">chevron_right</i></a>f
                         </li>
                     </c:otherwise>
                 </c:choose>
