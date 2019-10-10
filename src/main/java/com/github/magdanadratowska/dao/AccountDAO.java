@@ -20,7 +20,7 @@ public class AccountDAO {
 
     private Logger logger = LoggerFactory.getLogger(AccountDAO.class);
 
-    private static final String SELECT_LAST_BOOKS = "select * from (select * from user_book, book where user_book.id_book = book.id) T where id_user = ? order by addition_date desc limit 1";
+    private static final String SELECT_LAST_BOOKS = "select * from (select * from user_book, book where ( user_book.id_book = book.id  AND is_active=true)) T where id_user = ? order by addition_date desc limit 1";
     private static final String ADD_BOOK_TO_USER_LIST = "insert into user_book (id_user, id_book, addition_date) values (?, ?, ?)";
     private static final String REMOVE_BOOK_FROM_USER_LIST = "delete from user_book where id_user=? and id_book=?";
     private static final String SELECT_USERS_LIST = "select * from (select * from user_book, book where (user_book.id_book = book.id AND is_active=true)) T where id_user =?";
@@ -33,7 +33,7 @@ public class AccountDAO {
     private static final String RESTORE_BOOK_TO_USER_LIST = "update user_book set is_active = true WHERE (id_user=? AND id_book=?)";
     private static final String UPDATE_BOOK_RATE = "update user_book set rate = ? where (id_user=? and id_book=?)";
     private static final String UPDATE_BOOK_REVIEW = "update user_book set review = ? where (id_user=? and id_book=?)";
-    private static final String COUNT_READ_USERS_BOOK = "select count(*) from user_book where id_user=?;";
+    private static final String COUNT_READ_USERS_BOOK = "select count(*) from user_book where( id_user=? AND is_active=true);";
     private static final String DELETE_USER_RECORDS = "delete from user_book where id_user = ?;";
 
     protected Connection getConnection() {
