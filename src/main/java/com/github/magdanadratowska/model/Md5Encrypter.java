@@ -13,7 +13,7 @@ public class Md5Encrypter {
         messageDigest.reset();
         messageDigest.update(inputBytes);
         byte[] encryptBytes = messageDigest.digest();
-        String hash = DatatypeConverter.printHexBinary(encryptBytes);
+        String hash = DatatypeConverter.printHexBinary(encryptBytes).toLowerCase();
         return hash;
     }
 }

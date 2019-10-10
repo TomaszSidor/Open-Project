@@ -16,6 +16,8 @@ public class UserDAO {
     private static final String SELECT_USER_BY_ID = "select * from user where id=?;";
     private static final String DELETE_USER_BY_ID = "delete from user where id=?;";
     private static final String SELECT_ALL_USERS = "select * from user;";
+    private static final String COUNT_ALL_USERS = "select count(*) as count from user;";
+    private static final String SELECT_ALL_USERS_WITH_PAGES = "select * from user limit ?, ?;";
     private static final String SELECT_USER_BY_EMAIL = "select * from user where email=?;";
     private static final String ADD_USER = "INSERT INTO user (username, email, password, register_date, user_type) VALUES (?, ?, ?, ?, ?);";
     private static final String UPDATE_USER = "update user set username=?, email=?, user_type=? where id=?;";
@@ -31,11 +33,40 @@ public class UserDAO {
         return connection;
     }
 
+    public  Long getNummberOfUsers() {
+        Long numOfUsers = 0L;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(COUNT_ALL_USERS)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                numOfUsers = resultSet.getLong("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  numOfUsers;
+    }
+
 
     public List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                users.add(getUserFromDB(resultSet));
+            }
+        }
+        return users;
+    }
+
+    public List<User> getUsersWithPages(Long limitFrom, Long numOfRows) throws SQLException {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS_WITH_PAGES)) {
+            preparedStatement.setLong(1, limitFrom);
+            preparedStatement.setLong(2, numOfRows);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
