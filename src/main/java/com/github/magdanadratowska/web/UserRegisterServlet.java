@@ -1,6 +1,7 @@
 package com.github.magdanadratowska.web;
 
 import com.github.magdanadratowska.dao.UserDAO;
+import com.github.magdanadratowska.model.Md5Encrypter;
 import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserType;
 
@@ -11,12 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 @WebServlet ("/user-register")
 public class UserRegisterServlet extends HttpServlet {
     private final UserDAO userDAO = new UserDAO();
+    Md5Encrypter md5Encrypter = new Md5Encrypter();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,33 +32,32 @@ public class UserRegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String passwordRepeat = req.getParameter("password-repeat");
+
+
         HttpSession session = req.getSession();
         if (password.equals(passwordRepeat)) {
-            User user = new User();
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setRegisterDate(LocalDateTime.now());
-            user.setUserType(UserType.USER);
 
             try {
+                String hash = md5Encrypter.encrypt(password);
+
+                User user = new User();
+                user.setUsername(username);
+                user.setEmail(email);
+                user.setPassword(hash);
+                user.setRegisterDate(LocalDateTime.now());
+                user.setUserType(UserType.USER);
+
                 userDAO.addUser(user);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                //TODO przekazanie informacji o błędzie
-                resp.sendRedirect("/login.jsp");
-            }
 
-            try {
                 User userFromDB = userDAO.getUserByEmail(email).get();
                 session.setAttribute("loginError", null);
                 session.setAttribute("userId", userFromDB.getId());
                 session.setAttribute("userName", userFromDB.getUsername());
                 session.setAttribute("userType", userFromDB.getUserType());
                 resp.sendRedirect("/account");
-            } catch (SQLException e) {
+
+            } catch (SQLException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
-                //TODO przekazanie informacji o błędzie
                 resp.sendRedirect("/login.jsp");
             }
 
