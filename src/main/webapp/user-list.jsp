@@ -46,7 +46,7 @@
                 <td>${user.getPassword()}</td>
                 <td>${user.getRegisterDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))}</td>
                 <td>${user.getUserType()}</td>
-                <td><a href="/user-delete?userId=${user.getId()}" class="waves-effect waves-light btn red lighten-1">Delete</a></td>
+                <td><a href="/user-delete?userId=${user.getId()}"  <c:if test="${sessionScope.userId==user.getId()}">disabled</c:if> class="waves-effect waves-light btn red lighten-1">Delete</a></td>
                 <c:if test="${user.getUserType() eq 'USER'}">
                     <td><a href="/setadmin?userId=${user.getId()}" <c:if test="${sessionScope.userId==user.getId()}">disabled</c:if> class="waves-effect waves-light btn red lighten-1">Set admin</a></td>
                 </c:if>
@@ -58,6 +58,55 @@
         </c:forEach>
         </tbody>
     </table>
+
+
+    <div class="row">
+        <ul class="pagination center">
+
+            <%--For displaying Previous link except for the 1st page --%>
+            <c:choose>
+                <c:when test="${currentPage != 1}">
+                    <c:set var="queryPreviousTrue" scope="application" value="/user-list?page=${requestScope.currentPage-1}"/>
+                    <%--<c:set var="queryPreviousFalse" scope="application" value="/books-search?page=${requestScope.currentPage-1}&query=${requestScope.query}"/>--%>
+                    <li class="waves-effect"><a href="${requestScope.query==null ? queryPreviousTrue : queryPreviousFalse}"><i class="material-icons">chevron_left</i></a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="disabled"><a href=""><i class="material-icons">chevron_left</i></a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+            <%--For displaying Page numbers.
+            The when condition does not display a link for the current page--%>
+            <c:forEach begin="1" end="${noOfPages}" var="i">
+                <c:set var="queryForEachTrue" scope="application" value="/user-list?page=${i}"/>
+                <%--<c:set var="queryForEachFalse" scope="application" value="/books-search?page=${i}&query=${requestScope.query}"/>--%>
+                <c:choose>
+                    <c:when test="${currentPage eq i}">
+                        <%--                            <td>${i}</td>--%>
+                        <li class="active"><a href="${requestScope.query==null ? queryForEachTrue : queryForEachFalse}">${i}</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <%--                            <td><a href="/books?page=${i}">${i}</a></td>--%>
+                        <li class="waves-effect"><a href="${requestScope.query==null ? queryForEachTrue : queryForEachFalse}">${i}</a></li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <%--For displaying Next link --%>
+            <c:choose>
+                <c:when test="${currentPage lt noOfPages}">
+                    <c:set var="queryNextTrue" scope="application" value="/user-list?page=${requestScope.currentPage+1}"/>
+                    <%--<c:set var="queryNextFalse" scope="application" value="/books-search?page=${requestScope.currentPage+1}&query=${requestScope.query}"/>--%>
+                    <li class="waves-effect"><a href="${requestScope.query==null ? queryNextTrue : queryNextFalse}"><i class="material-icons">chevron_right</i></a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="disabled"><a href=""><i class="material-icons">chevron_right</i></a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </ul>
+    </div>
 
 
 </div>

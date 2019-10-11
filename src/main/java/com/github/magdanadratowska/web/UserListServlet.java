@@ -39,7 +39,7 @@ public class UserListServlet extends HttpServlet {
         Long currentPage = Long.parseLong(pageOptional.orElse("1"));
         Long noOfPages = Math.round(numberOfUsers / 5.0);
         List<User> allUsersWithPages = userDAO.getUsersWithPages((currentPage * 5) - 5, 5L);
-        req.setAttribute("usersList", allUsersWithPages);
+        req.setAttribute("users", allUsersWithPages);
         req.setAttribute("noOfPages", noOfPages);
         req.setAttribute("currentPage", currentPage);
         req.getRequestDispatcher("user-list.jsp").forward(req, resp);

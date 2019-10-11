@@ -53,6 +53,9 @@
                                 <c:when test="${sessionScope.loginError.equals('wrongPassword')}">
                                     <span class="white-text">Błędne hasło.</span>
                                 </c:when>
+                                <c:when test="${sessionScope.loginError.equals('emptyFields')}">
+                                    <span class="white-text">Należy wypełnić oba pola.</span>
+                                </c:when>
                             </c:choose>
                         </div>
                     </div>

@@ -119,13 +119,16 @@ public class UserDAO {
     }
 
     public Optional<User> getUserByEmail(String email) throws SQLException {
+
         try (Connection connection = getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_EMAIL);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return Optional.ofNullable(getUserFromDB(resultSet));
+            while (resultSet.next()) {
+                return Optional.ofNullable(getUserFromDB(resultSet));
+            }
         }
+        return Optional.empty();
     }
 
     public void deleteUserById(Long i) throws SQLException {

@@ -32,27 +32,33 @@ public class UserLoginServlet extends HttpServlet {
         String password = req.getParameter("password");
         HttpSession session = req.getSession();
         User user;
-        try {
-            Optional<User> optionalUser = userDAO.getUserByEmail(email);
-            if (!optionalUser.isPresent()) {
-                session.setAttribute("loginError", "userNotFound");
-                resp.sendRedirect("/login.jsp");
-            } else {
-                user = optionalUser.get();
-                String hash = md5Encrypter.encrypt(password);
-                if (user.getPassword().equals(hash)) {
-                    session.setAttribute("loginError", null);
-                    session.setAttribute("userId", user.getId());
-                    session.setAttribute("userName", user.getUsername());
-                    session.setAttribute("userType", user.getUserType());
-                    resp.sendRedirect("/account");
-                } else {
-                    session.setAttribute("loginError", "wrongPassword");
+        if (email.equals("") || password.equals("")) {
+            session.setAttribute("loginError", "emptyFields");
+            resp.sendRedirect("/login.jsp");
+        } else {
+            try {
+                Optional<User> optionalUser = userDAO.getUserByEmail(email);
+                if (!optionalUser.isPresent()) {
+                    session.setAttribute("loginError", "userNotFound");
                     resp.sendRedirect("/login.jsp");
+                } else {
+                    user = optionalUser.get();
+                    String hash = md5Encrypter.encrypt(password);
+                    if (user.getPassword().equals(hash)) {
+                        session.setAttribute("loginError", null);
+                        session.setAttribute("userId", user.getId());
+                        session.setAttribute("userName", user.getUsername());
+                        session.setAttribute("userType", user.getUserType());
+                        resp.sendRedirect("/account");
+                    } else {
+                        session.setAttribute("loginError", "wrongPassword");
+                        resp.sendRedirect("/login.jsp");
+                    }
                 }
+            } catch (SQLException  | NoSuchAlgorithmException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException  | NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
+
     }
 }
