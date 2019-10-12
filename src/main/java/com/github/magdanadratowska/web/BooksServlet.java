@@ -46,7 +46,7 @@ public class BooksServlet extends HttpServlet {
         long numberOfBooks = accountDAO.countAllBook();
         Optional<String> pageStringOptional = Optional.ofNullable(request.getParameter("page"));
         long page = Long.parseLong(pageStringOptional.orElse("1"));
-        long noOfPages = Math.round(numberOfBooks / 5.0);
+        long noOfPages = (long) Math.ceil(numberOfBooks / 5.0);
         List<UserBook> userBookList = accountDAO.getAllBookListForCurrentUserWithDeletedBooks(user, (page * 5 - 5), 5);
         request.setAttribute("userBookList", userBookList);
         request.setAttribute("noOfPages", noOfPages);

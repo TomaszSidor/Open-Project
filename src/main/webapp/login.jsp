@@ -48,13 +48,13 @@
                         <div class="card-panel red lighten-1">
                             <c:choose>
                                 <c:when test="${sessionScope.loginError.equals('userNotFound')}">
-                                    <span class="white-text">Nie znaleziono użytkownika.</span>
+                                    <span class="white-text">User not found.</span>
                                 </c:when>
                                 <c:when test="${sessionScope.loginError.equals('wrongPassword')}">
-                                    <span class="white-text">Błędne hasło.</span>
+                                    <span class="white-text">Repeat password correctly.</span>
                                 </c:when>
                                 <c:when test="${sessionScope.loginError.equals('emptyFields')}">
-                                    <span class="white-text">Należy wypełnić oba pola.</span>
+                                    <span class="white-text">Empty fields.</span>
                                 </c:when>
                             </c:choose>
                         </div>

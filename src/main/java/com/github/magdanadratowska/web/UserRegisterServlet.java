@@ -32,9 +32,9 @@ public class UserRegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String passwordRepeat = req.getParameter("password-repeat");
-
-
         HttpSession session = req.getSession();
+        session.setAttribute("registerError", null);
+
         if (password.equals(passwordRepeat)) {
 
             try {
@@ -50,7 +50,6 @@ public class UserRegisterServlet extends HttpServlet {
                 userDAO.addUser(user);
 
                 User userFromDB = userDAO.getUserByEmail(email).get();
-                session.setAttribute("loginError", null);
                 session.setAttribute("userId", userFromDB.getId());
                 session.setAttribute("userName", userFromDB.getUsername());
                 session.setAttribute("userType", userFromDB.getUserType());

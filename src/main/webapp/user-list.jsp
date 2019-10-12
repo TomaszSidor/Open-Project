@@ -29,11 +29,11 @@
             <th>Id</th>
             <th>Username</th>
             <th>Email</th>
-            <th>password :P</th>
             <th>register date</th>
             <th>user type</th>
             <th>delete</th>
-            <th>add admin</th>
+            <th>role</th>
+            <th>password</th>
         </tr>
         </thead>
 
@@ -43,7 +43,6 @@
                 <td>${user.getId()}</td>
                 <td>${user.getUsername()}</td>
                 <td>${user.getEmail()}</td>
-                <td>${user.getPassword()}</td>
                 <td>${user.getRegisterDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))}</td>
                 <td>${user.getUserType()}</td>
                 <td><a href="/user-delete?userId=${user.getId()}"  <c:if test="${sessionScope.userId==user.getId()}">disabled</c:if> class="waves-effect waves-light btn red lighten-1">Delete</a></td>
@@ -53,7 +52,7 @@
                 <c:if test="${user.getUserType() eq 'ADMIN'}">
                     <td><a href="/setuser?userId=${user.getId()}" <c:if test="${sessionScope.userId==user.getId()}">disabled</c:if> class="waves-effect waves-light btn red lighten-1">Set user</a></td>
                 </c:if>
-                <td></td>
+                <td><a href="/passwordChange?userId=${user.getId()}" class="waves-effect waves-light btn red lighten-1">Change</a></td>
             </tr>
         </c:forEach>
         </tbody>

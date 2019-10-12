@@ -14,7 +14,7 @@
     <meta password="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-    <title>Register / Login</title>
+    <title>Password change</title>
 </head>
 <body>
 <div class="container">
@@ -25,37 +25,36 @@
 
 
     <div class="row">
-        <div class="col s12 m6">
+        <div class="col s12 m12">
             <div class="row">
-                <h4>Login:</h4>
-                <form method="post" action="/login">
+                <h4>Password change for user: ${requestScope.user.getUsername()}, (${requestScope.user.getEmail()} </h4>
+                <form method="post" action="/passwordChange">
                     <div>
-                        <input placeholder="Your email" id="user-email-login" type="text" class="validate" name="email">
-                        <label for="user-email-login">User email</label>
-                        <input placeholder="Your password" id="user-password-login" type="password" class="validate"
-                               name="password">
-                        <label for="user-password-login">User email</label>
+                        <input type="hidden" name="userId" value="${requestScope.user.getId()}">
+                        <input placeholder="New password" id="newPassword" type="password" class="validate" name="newPassword">
+                        <label for="newPassword">Type new password</label>
+                        <input placeholder="Repeat new password" id="newPasswordRepeat" type="password" class="validate"
+                               name="newPasswordRepeat">
+                        <label for="newPasswordRepeat">Repeat new password</label>
                     </div>
                     <div>
-                        <input type="submit" class="waves-effect waves-light btn red lighten-1" value="login">
+                        <input type="submit" class="waves-effect waves-light btn red lighten-1" value="Submit">
                     </div>
                 </form>
             </div>
 
-            <c:if test="${sessionScope.loginError != null}">
+            <c:if test="${sessionScope.changePasswordError != null}">
                 <div class="row">
                     <div class="col s12">
                         <div class="card-panel red lighten-1">
                             <c:choose>
-                                <c:when test="${sessionScope.loginError.equals('userNotFound')}">
-                                    <span class="white-text">Nie znaleziono użytkownika.</span>
+                                <c:when test="${sessionScope.changePasswordError.equals('emptyFields')}">
+                                    <span class="white-text">Empty fields.</span>
                                 </c:when>
-                                <c:when test="${sessionScope.loginError.equals('wrongPassword')}">
-                                    <span class="white-text">Błędne hasło.</span>
+                                <c:when test="${sessionScope.changePasswordError.equals('repeatPasswordError')}">
+                                    <span class="white-text">Repeat password correctly.</span>
                                 </c:when>
-                                <c:when test="${sessionScope.loginError.equals('emptyFields')}">
-                                    <span class="white-text">Należy wypełnić oba pola.</span>
-                                </c:when>
+
                             </c:choose>
                         </div>
                     </div>
@@ -64,44 +63,6 @@
         </div>
 
 
-        <div class="col s12 m6">
-            <div class="row">
-                <h4>New user?</h4>
-                <form method="post" action="/user-register">
-                    <div>
-                        <input placeholder="Your name" id="user-name" type="text" class="validate" name="name">
-                        <label for="user-name">User name</label>
-
-                        <input placeholder="Your email" id="user-email" type="text" class="validate" name="email">
-                        <label for="user-email">User email</label>
-
-                        <input placeholder="Your password" id="user-password" type="password" class="validate"
-                               name="password">
-                        <label for="user-password">User email</label>
-
-                        <input placeholder="Repeat password" id="user-password-repeat" type="password" class="validate"
-                               name="password-repeat">
-                        <label for="user-password-repeat">Repeat password</label>
-                    </div>
-                    <div>
-                        <input type="submit" class="waves-effect waves-light btn red lighten-1" value="submit">
-                    </div>
-                </form>
-            </div>
-            <c:if test="${sessionScope.registerError != null}">
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card-panel red lighten-1">
-                            <c:choose>
-                                <c:when test="${sessionScope.registerError.equals('repeatPasswordError')}">
-                                    <span class="white-text">Powtórzone hasło jest niepoprawne.</span>
-                                </c:when>
-                            </c:choose>
-                        </div>
-                    </div>
-                </div>
-            </c:if>
-        </div>
     </div>
 </div>
 

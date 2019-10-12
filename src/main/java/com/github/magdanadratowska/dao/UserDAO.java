@@ -20,7 +20,7 @@ public class UserDAO {
     private static final String SELECT_ALL_USERS_WITH_PAGES = "select * from user limit ?, ?;";
     private static final String SELECT_USER_BY_EMAIL = "select * from user where email=?;";
     private static final String ADD_USER = "INSERT INTO user (username, email, password, register_date, user_type) VALUES (?, ?, ?, ?, ?);";
-    private static final String UPDATE_USER = "update user set username=?, email=?, user_type=? where id=?;";
+    private static final String UPDATE_USER = "update user set username=?, email=?, user_type=?, password=? where id=?;";
 
     protected Connection getConnection() {
         Connection connection = null;
@@ -36,7 +36,7 @@ public class UserDAO {
     public  Long getNummberOfUsers() {
         Long numOfUsers = 0L;
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(COUNT_ALL_USERS)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(COUNT_ALL_USERS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 numOfUsers = resultSet.getLong("count");
@@ -64,7 +64,7 @@ public class UserDAO {
     public List<User> getUsersWithPages(Long limitFrom, Long numOfRows) throws SQLException {
         List<User> users = new ArrayList<>();
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS_WITH_PAGES)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS_WITH_PAGES)) {
             preparedStatement.setLong(1, limitFrom);
             preparedStatement.setLong(2, numOfRows);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -157,13 +157,14 @@ public class UserDAO {
         }
     }
 
-    private void updateUser(User user) throws SQLException {
+    public void updateUser(User user) throws SQLException {
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER)) {
                 statement.setString(1, user.getUsername());
                 statement.setString(2, user.getEmail());
                 statement.setString(3, user.getUserType().name());
-                statement.setLong(4, user.getId());
+                statement.setString(4, user.getPassword());
+                statement.setLong(5, user.getId());
                 statement.executeUpdate();
             }
         }

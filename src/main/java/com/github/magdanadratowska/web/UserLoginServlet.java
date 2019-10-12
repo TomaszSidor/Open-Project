@@ -31,6 +31,8 @@ public class UserLoginServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         HttpSession session = req.getSession();
+        session.setAttribute("loginError", null);
+
         User user;
         if (email.equals("") || password.equals("")) {
             session.setAttribute("loginError", "emptyFields");
@@ -45,7 +47,6 @@ public class UserLoginServlet extends HttpServlet {
                     user = optionalUser.get();
                     String hash = md5Encrypter.encrypt(password);
                     if (user.getPassword().equals(hash)) {
-                        session.setAttribute("loginError", null);
                         session.setAttribute("userId", user.getId());
                         session.setAttribute("userName", user.getUsername());
                         session.setAttribute("userType", user.getUserType());
