@@ -23,6 +23,23 @@
     </div>
 
 
+
+
+    <div class="row valign-wrapper">
+        <div class="col m12 z-depth-1">
+            <div class="nav-wrapper">
+                <form action="/user-search">
+                    <div class="input-field margin-search">
+                        <input value="${requestScope.query}" id="search" type="search" name="query" required>
+                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                        <i class="material-icons">close</i>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <table>
         <thead>
         <tr>
@@ -79,14 +96,14 @@
             The when condition does not display a link for the current page--%>
             <c:forEach begin="1" end="${noOfPages}" var="i">
                 <c:set var="queryForEachTrue" scope="application" value="/user-list?page=${i}"/>
-                <%--<c:set var="queryForEachFalse" scope="application" value="/books-search?page=${i}&query=${requestScope.query}"/>--%>
+                <c:set var="queryForEachFalse" scope="application" value="/user-search?page=${i}&query=${requestScope.query}"/>
                 <c:choose>
                     <c:when test="${currentPage eq i}">
                         <%--                            <td>${i}</td>--%>
                         <li class="active"><a href="${requestScope.query==null ? queryForEachTrue : queryForEachFalse}">${i}</a></li>
                     </c:when>
                     <c:otherwise>
-                        <%--                            <td><a href="/books?page=${i}">${i}</a></td>--%>
+                                                    <%--<td><a href="/books?page=${i}">${i}</a></td>--%>
                         <li class="waves-effect"><a href="${requestScope.query==null ? queryForEachTrue : queryForEachFalse}">${i}</a></li>
                     </c:otherwise>
                 </c:choose>
@@ -95,7 +112,7 @@
             <c:choose>
                 <c:when test="${currentPage lt noOfPages}">
                     <c:set var="queryNextTrue" scope="application" value="/user-list?page=${requestScope.currentPage+1}"/>
-                    <%--<c:set var="queryNextFalse" scope="application" value="/books-search?page=${requestScope.currentPage+1}&query=${requestScope.query}"/>--%>
+                    <c:set var="queryNextFalse" scope="application" value="/user-search?page=${requestScope.currentPage+1}&query=${requestScope.query}"/>
                     <li class="waves-effect"><a href="${requestScope.query==null ? queryNextTrue : queryNextFalse}"><i class="material-icons">chevron_right</i></a>
                     </li>
                 </c:when>

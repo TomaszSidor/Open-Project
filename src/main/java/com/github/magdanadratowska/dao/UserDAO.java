@@ -3,6 +3,7 @@ package com.github.magdanadratowska.dao;
 import com.github.magdanadratowska.model.User;
 import com.github.magdanadratowska.model.UserType;
 
+import javax.jws.soap.SOAPBinding;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,9 @@ public class UserDAO {
     private static final String DELETE_USER_BY_ID = "delete from user where id=?;";
     private static final String SELECT_ALL_USERS = "select * from user;";
     private static final String COUNT_ALL_USERS = "select count(*) as count from user;";
+    private static final String COUNT_ALL_USERS_WITH_QUERY = "select count(*) as count from user where  lower (username) like  lower (?) or lower (email) like lower (?);";
     private static final String SELECT_ALL_USERS_WITH_PAGES = "select * from user limit ?, ?;";
+    private static final String SELECT_QUERY_USERS_WITH_PAGES = "select * from user where  lower (username) like  lower (?) or lower (email) like lower (?) limit ?, ?;";
     private static final String SELECT_USER_BY_EMAIL = "select * from user where email=?;";
     private static final String ADD_USER = "INSERT INTO user (username, email, password, register_date, user_type) VALUES (?, ?, ?, ?, ?);";
     private static final String UPDATE_USER = "update user set username=?, email=?, user_type=?, password=? where id=?;";
@@ -168,5 +171,42 @@ public class UserDAO {
                 statement.executeUpdate();
             }
         }
+    }
+
+    public long countAllUsersWithQuery(String query) {
+        long count = 0;
+        try (Connection connection = getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(COUNT_ALL_USERS_WITH_QUERY)) {
+                preparedStatement.setString(1, "%"+query+"%");
+                preparedStatement.setString(2, "%"+query+"%");
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    count = resultSet.getLong("count");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public List<User> getAllUsersWithQuery(String query, long limitFrom, int numOfRows)  {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY_USERS_WITH_PAGES)) {
+            preparedStatement.setString(1, "%"+query+"%");
+            preparedStatement.setString(2, "%"+query+"%");
+            preparedStatement.setLong(3, limitFrom);
+            preparedStatement.setLong(4, numOfRows);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                users.add(getUserFromDB(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+
     }
 }
